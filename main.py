@@ -1,5 +1,6 @@
 import pygame
 
+
 # Game class
 class Game:
     ph = 0
@@ -29,25 +30,30 @@ class Scoreboard:
     savedAccel_4 = 0
     savedAccel_5 = 0
 
+
 # Settings Class
 class Settings:
     ph = 0
+
 
 if __name__ == '__main__':
     # Add pygame implementation later
     choice = 0
     while choice != 4:
-        
+
         print('Please enter a number to play (1), check scoreboard (2), go to settings (3), or quit (4): ')
         input(choice)
         while choice > 4 or choice < 1:
             print('Invalid input, please reenter')
-        
+
+        # game section here
         if choice == 1:
-            # game section here
-        
+
+
+        # scoreboard section here
         if choice == 2:
-            # scoreboard section here
-        
+
+
+        # settings section here
         if choice == 3:
-            # settings section here
+            
