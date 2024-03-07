@@ -30,7 +30,8 @@ class Scoreboard:
     savedAccel_5 = 0
 
 # Settings Class
-
+class Settings:
+    ph = 0
 
 if __name__ == '__main__':
     # Add pygame implementation later
