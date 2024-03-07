@@ -1,5 +1,14 @@
 import pygame
 
+# Game class
+class Game:
+    ph = 0
+
+
+# Scoreboard class
+
+
+
 if __name__ == '__main__':
     # Add pygame implementation later
     choice = 0
