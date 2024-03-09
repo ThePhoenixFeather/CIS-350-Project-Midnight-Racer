@@ -8,5 +8,5 @@ resolution = (500,900)
 
 playerControlSpeed = 7
 playerLayer = 1
-playerPixelHeight = 100
-playerPixelWidth = 50
+playerPixelHeight = 120
+playerPixelWidth = 60

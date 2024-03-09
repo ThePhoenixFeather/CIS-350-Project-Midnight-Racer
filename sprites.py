@@ -19,12 +19,18 @@ class Player(pg.sprite.Sprite):
         self.xChange = 0
         self.yChange = 0
 
-        #self.car = pg.image.load("imgs/race_car_1.png").convert()
-        #self.car = pg.transform
-        self.image = pg.Surface([self.width, self.height])
-        self.image.fill((255,0,0))
+        self.car = pg.image.load("imgs/race_car_3.png").convert()
 
-        self.rect = self.image.get_rect()
+
+        #self.car = pg.transform.scale(self.car, (self.width, self.height))
+        #self.car = pg.Surface((self.width, self.height))
+
+        self.image = self.car
+        self.image = pg.Surface((playerPixelWidth, playerPixelHeight))
+        self.image.set_colorkey((0,0,0))
+        self.image.blit(self.car, (0,0))
+
+        self.rect = self.car.get_rect()
         self.rect.x = self.x
         self.rect.y = self.y
 
@@ -42,13 +48,18 @@ class Player(pg.sprite.Sprite):
         keys = pg.key.get_pressed()
 
         # LEFT AND RIGHT CONTROL
-        if keys[pg.K_a] or keys[pg.K_LEFT]:
-            self.xChange -= playerControlSpeed
-        if keys[pg.K_d] or keys[pg.K_RIGHT]:
-            self.xChange += playerControlSpeed
+        if self.rect.x - self.width / 2 > 0:
+            if keys[pg.K_a] or keys[pg.K_LEFT]:
+                self.xChange -= playerControlSpeed
 
-        # UP AND DOWN CONTROL
-        if keys[pg.K_w] or keys[pg.K_UP]:
-            self.yChange -= playerControlSpeed
-        if keys[pg.K_s] or keys[pg.K_DOWN]:
-            self.yChange += playerControlSpeed
+        if self.rect.x + self.width * 1.5 < resolution[0]:
+            if keys[pg.K_d] or keys[pg.K_RIGHT]:
+                self.xChange += playerControlSpeed
+
+        if self.rect.y - self.height / 2 > 0:
+            if keys[pg.K_w] or keys[pg.K_UP]:
+                self.yChange -= playerControlSpeed
+
+        if self.rect.y + self.height * 1.5 < resolution[1]:
+            if keys[pg.K_s] or keys[pg.K_DOWN]:
+                self.yChange += playerControlSpeed
