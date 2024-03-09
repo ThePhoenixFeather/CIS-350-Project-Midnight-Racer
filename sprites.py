@@ -19,6 +19,8 @@ class Player(pg.sprite.Sprite):
         self.xChange = 0
         self.yChange = 0
 
+        #self.car = pg.image.load("imgs/race_car_1.png").convert()
+        #self.car = pg.transform
         self.image = pg.Surface([self.width, self.height])
         self.image.fill((255,0,0))
 
