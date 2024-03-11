@@ -78,10 +78,10 @@ class Game:
 
 
 
+if __name__ == "__main__":
+    game = Game()
+    game.mainMenu()
+    game.newGame()
 
-game = Game()
-game.mainMenu()
-game.newGame()
-
-while game.running:
-    game.main()
+    while game.running:
+        game.main()
