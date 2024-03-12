@@ -1,7 +1,7 @@
 import pygame
 import time as tm
 
-class Button():
+class Button:
     def __init__(self, color, x, y, width, height, text=''):
         self.color = color
         self.x = x
@@ -26,8 +26,8 @@ class Button():
 
     def isOver(self, pos):
         # Pos is the mouse position or a tuple of (x, y) coordinates
-        if pos[0] > self.x and pos[0] < self.x + self.width:
-            if pos[1] > self.y and pos[1] < self.y + self.height:
+        if self.x < pos[0] < self.x + self.width:
+            if self.y < pos[1] < self.y + self.height:
                 return True
 
         return False
@@ -35,16 +35,21 @@ class Button():
 def updatePhysics(startTime, accelConstant):
     timeReturn = tm.time() - startTime
     currentSpeedReturn = accelConstant * timeReturn
-    distanceReturn = .5 * (currentSpeedReturn) * timeReturn
+    distanceReturn = .5 * currentSpeedReturn * timeReturn
 
     return timeReturn, currentSpeedReturn, distanceReturn
 
 
 def mainMenuState(screen, Clock):
     mainMenuRun = True
-    startB = Button((60, 40, 40), 90, 90, 170, 100, "Start")
-    quitB = Button((60, 40, 40), 90, 200, 170, 100, "Quit")
+    startB = Button((60, 40, 40), 115, 120, 280, 100, "Start")
+    scoreB = Button((60, 40, 40), 115, 230, 280, 100, "Scoreboard")
+    settingsB = Button((60, 40, 40), 115, 340, 280, 100, "Settings")
+    quitB = Button((60, 40, 40), 115, 450, 280, 100, "Quit")
+
     startB.draw(screen)
+    scoreB.draw(screen)
+    settingsB.draw(screen)
     quitB.draw(screen)
 
     while mainMenuRun:
@@ -59,16 +64,26 @@ def mainMenuState(screen, Clock):
                 mainMenuRun = False
                 pygame.quit()
 
-        if (startB.isOver(mousePos) == True):
-            if (mouseButtons[0] == True):
+        if startB.isOver(mousePos) == True:
+            if mouseButtons[0] == True:
                 mainMenuRun = False
 
-        if (quitB.isOver(mousePos) == True):
-            if (mouseButtons[0] == True):
+        if scoreB.isOver(mousePos) == True:
+            if mouseButtons[0] == True:
+                mainMenuRun = False
+
+        if settingsB.isOver(mousePos) == True:
+            if mouseButtons[0] == True:
+                mainMenuRun = False
+
+        if quitB.isOver(mousePos) == True:
+            if mouseButtons[0] == True:
                 mainMenuRun = False
                 pygame.quit()
 
-    del(startB)
-    del(quitB)
+    del startB
+    del scoreB
+    del settingsB
+    del quitB
     screen.fill((0, 0, 0))
     pygame.display.flip()
