@@ -6,7 +6,11 @@ accelConstant = 1.1
 fps = 60
 resolution = (500, 900)
 
-playerControlSpeed = 7
+playerControlSpeed = 5
 playerLayer = 1
-playerPixelHeight = 120
-playerPixelWidth = 60
+playerPixelHeight = 160
+playerPixelWidth = 80
+
+lane1 = 85
+lane2 = 210
+lane3 = 335

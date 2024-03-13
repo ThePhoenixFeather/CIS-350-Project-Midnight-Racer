@@ -1,5 +1,7 @@
 import pygame
 import time as tm
+import scoreboard as sb
+import settings as setting
 
 class Button:
     def __init__(self, color, x, y, width, height, text=''):
@@ -71,10 +73,14 @@ def mainMenuState(screen, Clock):
         if scoreB.isOver(mousePos) == True:
             if mouseButtons[0] == True:
                 mainMenuRun = False
+                sb.scoreboardRun(screen, Clock)
+                mainMenuRun = True
 
         if settingsB.isOver(mousePos) == True:
             if mouseButtons[0] == True:
                 mainMenuRun = False
+                setting.settingsRun()
+                mainMenuRun = True
 
         if quitB.isOver(mousePos) == True:
             if mouseButtons[0] == True:
