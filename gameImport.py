@@ -1,6 +1,8 @@
 import pygame
 import time as tm
 from config import *
+import scoreboard as sb
+import settings as setting
 
 class Button:
     def __init__(self, color, x, y, width, height, text=''):
@@ -33,10 +35,9 @@ class Button:
 
         return False
 
-
-def updatePhysics(startTime, accelConstant):
+def updatePhysics(startTime, accelerationConstant):
     timeReturn = tm.time() - startTime
-    currentSpeedReturn = accelConstant * timeReturn
+    currentSpeedReturn = accelerationConstant * timeReturn
     distanceReturn = .5 * currentSpeedReturn * timeReturn
 
     return timeReturn, currentSpeedReturn, distanceReturn
@@ -58,11 +59,8 @@ def mainMenuState(screen, Clock):
     settingsB.draw(screen)
     quitB.draw(screen)
 
-
     while mainMenuRun:
         Clock.tick(30)
-
-
 
         mousePos = pygame.mouse.get_pos()
         pygame.display.flip()
@@ -73,20 +71,24 @@ def mainMenuState(screen, Clock):
                 mainMenuRun = False
                 pygame.quit()
 
-        if startB.isOver(mousePos) == True:
-            if mouseButtons[0] == True:
+        if startB.isOver(mousePos):
+            if mouseButtons[0]:
                 mainMenuRun = False
 
-        if scoreB.isOver(mousePos) == True:
-            if mouseButtons[0] == True:
+        if scoreB.isOver(mousePos):
+            if mouseButtons[0]:
                 mainMenuRun = False
+                sb.scoreboardRun(screen, Clock)
+                mainMenuRun = True
 
-        if settingsB.isOver(mousePos) == True:
-            if mouseButtons[0] == True:
+        if settingsB.isOver(mousePos):
+            if mouseButtons[0]:
                 mainMenuRun = False
+                setting.settingsRun()
+                mainMenuRun = True
 
-        if quitB.isOver(mousePos) == True:
-            if mouseButtons[0] == True:
+        if quitB.isOver(mousePos):
+            if mouseButtons[0]:
                 mainMenuRun = False
                 pygame.quit()
 
@@ -94,8 +96,6 @@ def mainMenuState(screen, Clock):
     del scoreB
     del settingsB
     del quitB
-
-    pygame.display.flip()
 
 def gameOverState(screen, Clock):
     gameOverRun = True
@@ -115,17 +115,16 @@ def gameOverState(screen, Clock):
         pygame.display.flip()
         mouseButtons = pygame.mouse.get_pressed()  # (LEFT, MID, RIGHT)
 
-        if mainMenuB.isOver(mousePos) == True:
-            if mouseButtons[0] == True:
+        if mainMenuB.isOver(mousePos):
+            if mouseButtons[0]:
                 return 0
 
-        if restartB.isOver(mousePos) == True:
-            if mouseButtons[0] == True:
+        if restartB.isOver(mousePos):
+            if mouseButtons[0]:
                 return 1
 
-        if quitB.isOver(mousePos) == True:
-            if mouseButtons[0] == True:
+        if quitB.isOver(mousePos):
+            if mouseButtons[0]:
                 pygame.quit()
 
-    pygame.display.flip()
-
+        pygame.display.flip()
