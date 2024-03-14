@@ -1,7 +1,6 @@
 import pygame
 import time as tm
-import scoreboard as sb
-import settings as setting
+from config import *
 
 class Button:
     def __init__(self, color, x, y, width, height, text=''):
@@ -34,6 +33,7 @@ class Button:
 
         return False
 
+
 def updatePhysics(startTime, accelConstant):
     timeReturn = tm.time() - startTime
     currentSpeedReturn = accelConstant * timeReturn
@@ -49,13 +49,20 @@ def mainMenuState(screen, Clock):
     settingsB = Button((60, 40, 40), 115, 340, 280, 100, "Settings")
     quitB = Button((60, 40, 40), 115, 450, 280, 100, "Quit")
 
+    bg = pygame.image.load("imgs/option3.JPG").convert()
+    bg = pygame.transform.scale(bg, resolution)
+    screen.blit(bg, (0, 0))
+
     startB.draw(screen)
     scoreB.draw(screen)
     settingsB.draw(screen)
     quitB.draw(screen)
 
+
     while mainMenuRun:
         Clock.tick(30)
+
+
 
         mousePos = pygame.mouse.get_pos()
         pygame.display.flip()
@@ -73,14 +80,10 @@ def mainMenuState(screen, Clock):
         if scoreB.isOver(mousePos) == True:
             if mouseButtons[0] == True:
                 mainMenuRun = False
-                sb.scoreboardRun(screen, Clock)
-                mainMenuRun = True
 
         if settingsB.isOver(mousePos) == True:
             if mouseButtons[0] == True:
                 mainMenuRun = False
-                setting.settingsRun()
-                mainMenuRun = True
 
         if quitB.isOver(mousePos) == True:
             if mouseButtons[0] == True:
@@ -91,5 +94,38 @@ def mainMenuState(screen, Clock):
     del scoreB
     del settingsB
     del quitB
-    screen.fill((0, 0, 0))
+
     pygame.display.flip()
+
+def gameOverState(screen, Clock):
+    gameOverRun = True
+    youCrashed = Button((255, 40, 40), 115, 100, 280, 100, "You Crashed!")
+    mainMenuB = Button((60, 40, 40), 115, 220, 280, 100, "Main Menu")
+    restartB = Button((60, 40, 40), 115, 330, 280, 100, "Restart")
+    quitB = Button((60, 40, 40), 115, 450, 280, 100, "Quit")
+
+    youCrashed.draw(screen)
+    mainMenuB.draw(screen)
+    restartB.draw(screen)
+    quitB.draw(screen)
+
+    while gameOverRun:
+        Clock.tick(30)
+        mousePos = pygame.mouse.get_pos()
+        pygame.display.flip()
+        mouseButtons = pygame.mouse.get_pressed()  # (LEFT, MID, RIGHT)
+
+        if mainMenuB.isOver(mousePos) == True:
+            if mouseButtons[0] == True:
+                return 0
+
+        if restartB.isOver(mousePos) == True:
+            if mouseButtons[0] == True:
+                return 1
+
+        if quitB.isOver(mousePos) == True:
+            if mouseButtons[0] == True:
+                pygame.quit()
+
+    pygame.display.flip()
+
