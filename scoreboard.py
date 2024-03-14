@@ -48,8 +48,8 @@ class Score:
 scores = [Score(), Score(), Score(), Score(), Score()]
 
 # Used to retrieve the scores variable array
-def getScores():
-    return scores
+def getScores(a):
+    return scores[a]
 
 # Used to set the scores in scores variable array
 def setScores(s1, s2, s3, s4, s5):
@@ -61,11 +61,11 @@ def setScores(s1, s2, s3, s4, s5):
 
 # Updates scoreboard with new scores, based on score total alone.
 def updateScoreboard(cur_score, cur_dist, cur_speed):
-    s1 = Score()
-    s2 = Score()
-    s3 = Score()
-    s4 = Score()
-    s5 = Score()
+    s1 = getScores(0)
+    s2 = getScores(1)
+    s3 = getScores(2)
+    s4 = getScores(3)
+    s5 = getScores(4)
 
     # use when there are scores in all the 5 positions on the scoreboard
     holder1 = Score()
@@ -123,7 +123,7 @@ def scoreboardRun(screen, Clock):
 
     exitb.draw(screen)
 
-    scoreboard = getScores()
+    scoreboard = [getScores(0), getScores(1), getScores(2), getScores(3), getScores(4)]
     if scoreboard[0].score == 0:
         # Make this display the message on the display later. Include a button to return to end the scoreboardRun section.
         print("There are no scores to display yet.")
