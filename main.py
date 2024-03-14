@@ -1,6 +1,5 @@
 from sprites import *
 from gameImport import *
-from scoreboard import *
 import math as mt
 
 
@@ -11,6 +10,8 @@ class Game:
         self.Clock = pg.time.Clock()
         self.running = True
 
+    def gameOver(self):
+        gameOverState(self.screen, self.Clock)
 
     def mainMenu(self):
         mainMenuState(self.screen, self.Clock)
@@ -38,13 +39,25 @@ class Game:
         self.car5 = SlowCar(self, lane1, -800)
         self.car6 = SlowCar(self, lane3, -1400)
         self.car7 = SlowCar(self, lane2, -1600)
+        self.acceleration = 0
 
-        self.yPosSlowCars = [self.car1.rect.y, self.car2.rect.y, self.car3.rect.y, self.car4.rect.y, self.car5.rect.y]
+        self.carList = [self.car1, self.car2, self.car3, self.car4, self.car5, self.car6, self.car7]
+
+        self.yPosSlowCars = [self.car1.rect.y, self.car2.rect.y, self.car3.rect.y, self.car4.rect.y, self.car5.rect.y, self.car6.rect.y, self.car7.rect.y]
+        self.xPosSlowCars = [self.car1.rect.x, self.car2.rect.x, self.car3.rect.x, self.car4.rect.x, self.car5.rect.x, self.car6.rect.x, self.car7.rect.x]
 
 
         self.bgHeight= self.bg.get_height()
         self.bgNeeded = mt.ceil(resolution[1]/self.bgHeight) + 1
         self.scroll = 0
+        self.gameScore = 0
+        self.gameIsOver = False
+
+    def respawnAllCars(self):
+        for i in self.carList:
+            i.respawn()
+            game.main()
+
 
     def events(self):
         for events in pg.event.get():
@@ -60,14 +73,13 @@ class Game:
 
 
     def draw(self):
-        #self.screen.blit(self.bg, (0,0))
 
         # draw scrolling background
         for i in range(0, self.bgNeeded):
             self.screen.blit(self.bg, (0, i * -1*self.bgHeight + self.scroll))
 
         # scroll background
-        self.scroll += 7
+        self.scroll += 7 + self.acceleration
 
         #reset scroll
 
@@ -75,26 +87,28 @@ class Game:
             self.scroll = 0
 
         self.allSprites.draw(self.screen)
+        self.acceleration += 0.001
         self.Clock.tick(fps)
+
         pg.display.update()
 
 
     def main(self):
         while self.playing:
-
             self.events()
             self.update()
             self.draw()
+
+
         self.running = False
 
 
-flag = 0
 game = Game()
-while flag != 1:
-    game.mainMenu()
-    game.newGame()
+game.mainMenu()
+game.newGame()
+#game.respawnAllCars()
+while game.running:
+    game.main()
 
-    while game.running:
-        game.main()
 
-    updateScoreboard(points, carPosition, speed)
+pygame.quit()
