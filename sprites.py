@@ -73,8 +73,8 @@ class Player(pg.sprite.Sprite):
 
     def checkColision(self):
         for i in range(len(self.game.yPosSlowCars)):
-            if self.rect.y - playerPixelHeight + 10 <= self.game.yPosSlowCars[i] <= self.rect.y + playerPixelHeight - 10 and \
-                    (self.game.xPosSlowCars[i] - playerPixelWidth + 12 <= self.rect.x <= self.game.xPosSlowCars[i] + playerPixelWidth - 12):
+            if self.rect.y - playerPixelHeight + 20 <= self.game.yPosSlowCars[i] <= self.rect.y + playerPixelHeight - 20 and \
+                    (self.game.xPosSlowCars[i] - playerPixelWidth + 15 <= self.rect.x <= self.game.xPosSlowCars[i] + playerPixelWidth - 15):
                 self.game.gameIsOver = True
 
 class SlowCar(pg.sprite.Sprite):
@@ -123,8 +123,10 @@ class SlowCar(pg.sprite.Sprite):
 
     def respawn(self):
         t = 0
+        i = 0
         while(True):
-            y = rand.randint(-2800, -100)
+            i+=1
+            y = rand.randint(-4500, -100)
             for i in self.game.yPosSlowCars:
                 if not (-1*playerPixelHeight*2 + i <= y <= playerPixelHeight*2 + i):
                     t+=1
@@ -132,4 +134,6 @@ class SlowCar(pg.sprite.Sprite):
                 break
             else:
                 t = 0
+        if i >= 50:
+            print("Respawn struggle: ", i)
         self.rect.y = y

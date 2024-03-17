@@ -9,14 +9,18 @@ def mousePos():
 def mouseButtons():
     return pygame.mouse.get_pressed()
 
+
+
+
 class Button:
-    def __init__(self, color, x, y, width, height, text=''):
+    def __init__(self, color, x, y, width, height, text='', imageLocation=''):
         self.color = color
         self.x = x
         self.y = y
         self.width = width
         self.height = height
         self.text = text
+        self.imageLocation = imageLocation
 
 
     def draw(self, win, outline=None):
@@ -25,6 +29,13 @@ class Button:
             pygame.draw.rect(win, outline, (self.x - 2, self.y - 2, self.width + 4, self.height + 4), 0)
 
         pygame.draw.rect(win, self.color, (self.x, self.y, self.width, self.height), 0)
+
+        if self.imageLocation != '':
+            image = pygame.image.load(self.imageLocation).convert()
+            image = pygame.transform.scale(image, (self.width, self.height))
+            font = pygame.font.SysFont('Times New Roman', 60)
+            text = font.render(self.text, 1, (0, 0, 0))
+            win.blit(image, (self.x, self.y))
 
         if self.text != '':
             font = pygame.font.SysFont('Times New Roman', 60)
@@ -51,14 +62,19 @@ def updatePhysics(startTime, accelConstant):
 
 def mainMenuState(screen, Clock):
     mainMenuRun = True
-    startB = Button((60, 40, 40), 115, 120, 280, 100, "Start")
-    scoreB = Button((60, 40, 40), 115, 230, 280, 100, "Scoreboard")
-    settingsB = Button((60, 40, 40), 115, 340, 280, 100, "Settings")
-    quitB = Button((60, 40, 40), 115, 450, 280, 100, "Quit")
+    startB = Button((60, 40, 40), 115, 290, 280, 100, "", "imgs/race_car_0.png")    # Allows for buttons to display images
+    scoreB = Button((60, 40, 40), 115, 410, 280, 100, "Scoreboard")
+    settingsB = Button((60, 40, 40), 115, 530, 280, 100, "Settings")
+    quitB = Button((60, 40, 40), 115, 650, 280, 100, "Quit")
 
     bg = pygame.image.load("imgs/option3.JPG").convert()
     bg = pygame.transform.scale(bg, resolution)
     screen.blit(bg, (0, 0))
+
+    titleScreen = pygame.image.load("imgs/titleScreen.png").convert()
+    titleScreen.set_colorkey((0, 0, 0))
+    titleScreen = pygame.transform.scale(titleScreen, (350,250))
+    screen.blit(titleScreen, (80, 20))
 
     startB.draw(screen)
     scoreB.draw(screen)

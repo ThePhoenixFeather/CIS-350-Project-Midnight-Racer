@@ -33,19 +33,22 @@ class Game:
         self.player = Player(self, resolution[0]/2-playerPixelWidth/2, resolution[1]-playerPixelHeight-playerPixelHeight/2)
 
         # RNG Cars
-        self.car1 = SlowCar(self, lane1, -600)
-        self.car2 = SlowCar(self, lane2, -800)
-        self.car3 = SlowCar(self, lane2, -100)
-        self.car4 = SlowCar(self, lane3, -1600)
-        self.car5 = SlowCar(self, lane1, -800)
-        self.car6 = SlowCar(self, lane3, -1400)
-        self.car7 = SlowCar(self, lane2, -1600)
+        self.car1 = SlowCar(self, lane1, 0)
+        self.car2 = SlowCar(self, lane2, 0)
+        self.car3 = SlowCar(self, lane2, 0)
+        self.car4 = SlowCar(self, lane3, 0)
+        self.car5 = SlowCar(self, lane1, 0)
+        self.car6 = SlowCar(self, lane3, 0)
+        self.car7 = SlowCar(self, lane2, 0)
+        self.car8 = SlowCar(self, lane1, 0)
+        self.car9 = SlowCar(self, lane3, 0)
+
         self.acceleration = 0
 
-        self.carList = [self.car1, self.car2, self.car3, self.car4, self.car5, self.car6, self.car7]
+        self.carList = [self.car1, self.car2, self.car3, self.car4, self.car5, self.car6, self.car7, self.car8, self.car9]
 
-        self.yPosSlowCars = [self.car1.rect.y, self.car2.rect.y, self.car3.rect.y, self.car4.rect.y, self.car5.rect.y, self.car6.rect.y, self.car7.rect.y]
-        self.xPosSlowCars = [self.car1.rect.x, self.car2.rect.x, self.car3.rect.x, self.car4.rect.x, self.car5.rect.x, self.car6.rect.x, self.car7.rect.x]
+        self.yPosSlowCars = [self.car1.rect.y, self.car2.rect.y, self.car3.rect.y, self.car4.rect.y, self.car5.rect.y, self.car6.rect.y, self.car7.rect.y, self.car8.rect.y, self.car9.rect.y]
+        self.xPosSlowCars = [self.car1.rect.x, self.car2.rect.x, self.car3.rect.x, self.car4.rect.x, self.car5.rect.x, self.car6.rect.x, self.car7.rect.x, self.car8.rect.x, self.car9.rect.x]
 
 
         self.bgHeight= self.bg.get_height()
@@ -53,11 +56,13 @@ class Game:
         self.scroll = 0
         self.gameScore = 0
         self.gameIsOver = False
+        #self.respawnAllCars()
 
     def respawnAllCars(self):
         for i in self.carList:
             i.respawn()
-            game.main()
+            self.update()
+
 
 
     def events(self):
@@ -69,8 +74,8 @@ class Game:
 
     def update(self):
         self.allSprites.update()
-        self.yPosSlowCars = [self.car1.rect.y, self.car2.rect.y, self.car3.rect.y, self.car4.rect.y, self.car5.rect.y, self.car6.rect.y, self.car7.rect.y]
-        self.xPosSlowCars = [self.car1.rect.x, self.car2.rect.x, self.car3.rect.x, self.car4.rect.x, self.car5.rect.x, self.car6.rect.x, self.car7.rect.x]
+        self.yPosSlowCars = [self.car1.rect.y, self.car2.rect.y, self.car3.rect.y, self.car4.rect.y, self.car5.rect.y, self.car6.rect.y, self.car7.rect.y, self.car8.rect.y, self.car9.rect.y]
+        self.xPosSlowCars = [self.car1.rect.x, self.car2.rect.x, self.car3.rect.x, self.car4.rect.x, self.car5.rect.x, self.car6.rect.x, self.car7.rect.x, self.car8.rect.x, self.car9.rect.x]
 
 
     def draw(self):
@@ -88,19 +93,20 @@ class Game:
             self.scroll = 0
 
         self.allSprites.draw(self.screen)
-        self.acceleration += 0.001
+        self.acceleration += 0.0015
         self.Clock.tick(fps)
 
         pg.display.update()
 
     def restart(self):
-        tm.sleep(0.05)
         self.main()
 
     def main(self):
+
         if self.choice == 0:
             game.mainMenu()
         game.newGame()
+        self.respawnAllCars()
         while self.playing:
             self.events()
             self.update()
