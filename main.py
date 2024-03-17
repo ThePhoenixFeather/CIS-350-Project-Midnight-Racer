@@ -107,7 +107,6 @@ class Game:
             self.draw()
             if self.gameIsOver == True:
                 self.choice = self.gameOver()
-                print(self.choice)
                 self.playing = False
                 self.restart()
 

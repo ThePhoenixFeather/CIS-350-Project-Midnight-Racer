@@ -2,6 +2,13 @@ import pygame
 import time as tm
 from config import *
 
+
+def mousePos():
+    return pygame.mouse.get_pos()
+
+def mouseButtons():
+    return pygame.mouse.get_pressed()
+
 class Button:
     def __init__(self, color, x, y, width, height, text=''):
         self.color = color
@@ -58,37 +65,65 @@ def mainMenuState(screen, Clock):
     settingsB.draw(screen)
     quitB.draw(screen)
 
+    startBClick = False
+    scoreBClick = False
+    settingsBClick = False
+    quitBClick = False
+
 
     while mainMenuRun:
         Clock.tick(30)
-
-
-
-        mousePos = pygame.mouse.get_pos()
         pygame.display.flip()
-        mouseButtons = pygame.mouse.get_pressed()  # (LEFT, MID, RIGHT)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 mainMenuRun = False
                 pygame.quit()
 
-        if startB.isOver(mousePos) == True:
-            if mouseButtons[0] == True:
-                mainMenuRun = False
 
-        if scoreB.isOver(mousePos) == True:
-            if mouseButtons[0] == True:
-                mainMenuRun = False
+        # Checks if button is pressed has been pressed and then released.
+        if startBClick == True and mouseButtons()[0] == False:
+            mainMenuRun = False
 
-        if settingsB.isOver(mousePos) == True:
-            if mouseButtons[0] == True:
-                mainMenuRun = False
+        if scoreBClick == True and mouseButtons()[0] == False:
+            pass
+            # Score board engage here
 
-        if quitB.isOver(mousePos) == True:
-            if mouseButtons[0] == True:
-                mainMenuRun = False
-                pygame.quit()
+        if settingsBClick == True and mouseButtons()[0] == False:
+            pass
+
+        if quitBClick == True and mouseButtons()[0] == False:
+            mainMenuRun = False
+            pygame.quit()
+
+
+
+        # Checks if button has been pressed
+        if startB.isOver(mousePos()) == True and mouseButtons()[0] == True:
+            startBClick = True
+        else:
+            startBClick = False
+
+        if scoreB.isOver(mousePos()) == True and mouseButtons()[0] == True:
+            scoreBClick = True
+        else:
+            scoreBClick = False
+
+        if settingsB.isOver(mousePos()) == True and mouseButtons()[0] == True:
+            settingsBClick = True
+        else:
+            settingsBClick = False
+
+
+        if settingsB.isOver(mousePos()) == True and mouseButtons()[0] == True:
+            settingsBClick = True
+        else:
+            settingsBClick = False
+
+        if quitB.isOver(mousePos()) == True and mouseButtons()[0] == True:
+            quitBClick = True
+        else:
+            quitBClick = False
 
     del startB
     del scoreB
@@ -109,32 +144,43 @@ def gameOverState(screen, Clock):
     restartB.draw(screen)
     quitB.draw(screen)
     choice = 0
+
+    mainMenuBClick = False
+    restartBClick = False
+    quitBClick = False
+
     while gameOverRun:
         Clock.tick(30)
-
-
-        mousePos = pygame.mouse.get_pos()
         pygame.display.flip()
-        mouseButtons = pygame.mouse.get_pressed()  # (LEFT, MID, RIGHT)
+
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 gameOverRun = False
                 pygame.quit()
 
-        if mainMenuB.isOver(mousePos) == True:
-            if mouseButtons[0] == True:
-                choice = 0
-                break
 
-        if restartB.isOver(mousePos) == True:
-            if mouseButtons[0] == True:
-                choice = 1
-                break
+        if mainMenuBClick == True and mouseButtons()[0] == False:
+            choice = 0
+            break
 
-        if quitB.isOver(mousePos) == True:
-            if mouseButtons[0] == True:
-                pygame.quit()
+        if restartBClick == True and mouseButtons()[0] == False:
+            choice = 1
+            break
+
+        if quitBClick == True and mouseButtons()[0] == False:
+            pygame.quit()
+            gameOverRun = False
+            break
+
+        if mainMenuB.isOver(mousePos()) == True and mouseButtons()[0] == True:
+                mainMenuBClick = True
+
+        if restartB.isOver(mousePos()) == True and mouseButtons()[0] == True:
+                restartBClick = True
+
+        if quitB.isOver(mousePos()) == True and mouseButtons()[0] == True:
+                quitBClick = True
 
     del youCrashed
     del mainMenuB
