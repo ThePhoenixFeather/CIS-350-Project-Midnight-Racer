@@ -22,13 +22,14 @@ class Player(pg.sprite.Sprite):
 
         self.car = pg.image.load("imgs/race_car_0.png").convert()
 
-        # self.car = pg.transform.scale(self.car, (self.width, self.height))
-        # self.car = pg.Surface((self.width, self.height))
+
+        #self.car = pg.transform.scale(self.car, (self.width, self.height))
+        #self.car = pg.Surface((self.width, self.height))
 
         self.image = self.car
         self.image = pg.Surface((playerPixelWidth, playerPixelHeight))
-        self.image.set_colorkey((255, 255, 255))
-        self.image.blit(self.car, (0, 0))
+        self.image.set_colorkey((255,255,255))
+        self.image.blit(self.car, (0,0))
 
         self.rect = self.car.get_rect()
         self.rect.x = self.x
@@ -36,7 +37,7 @@ class Player(pg.sprite.Sprite):
 
     def update(self):
         self.move()
-        #self.collideCheck()
+        #self.colideCheck()
 
         self.rect.x += self.xChange
         self.rect.y += self.yChange
@@ -47,35 +48,33 @@ class Player(pg.sprite.Sprite):
 
     def move(self):
         keys = pg.key.get_pressed()
-        self.checkCollision()
+        self.checkColision()
         # LEFT AND RIGHT CONTROL
 
         if self.rect.x - self.width / 2 > 0:
             if keys[pg.K_a] or keys[pg.K_LEFT]:
-                self.xChange -= playerControlSpeed
+                self.xChange -= playerControlSpeed + self.game.acceleration/5
 
         if self.rect.x + self.width * 1.5 < resolution[0]:
             if keys[pg.K_d] or keys[pg.K_RIGHT]:
-                self.xChange += playerControlSpeed + self.game.acceleration / 5
+                self.xChange += playerControlSpeed + self.game.acceleration/5
 
         # UP AND DOWN CONTROL
 
         if self.rect.y - self.height / 2 > 0:
-            if keys[pg.K_w] or keys[pg.K_UP]:
-                self.yChange -= (playerControlSpeed + self.game.acceleration / 5)
+            if (keys[pg.K_w] or keys[pg.K_UP]):
+                self.yChange -= playerControlSpeed
 
         if self.rect.y + self.height * 1.5 < resolution[1]:
-            if keys[pg.K_s] or keys[pg.K_DOWN]:
+            if (keys[pg.K_s] or keys[pg.K_DOWN]):
                 self.yChange += playerControlSpeed
 
-        self.game.collision = False
+        self.game.colision = False
 
-    def checkCollision(self):
+    def checkColision(self):
         for i in range(len(self.game.yPosSlowCars)):
             if self.rect.y - playerPixelHeight <= self.game.yPosSlowCars[i] <= self.rect.y + playerPixelHeight and \
-                    (self.game.xPosSlowCars[i] - playerPixelWidth + 10 <= self.rect.x <= self.game.xPosSlowCars[
-                        i] + playerPixelWidth - 10):
-                print("GAME OVER")
+                    (self.game.xPosSlowCars[i] - playerPixelWidth + 10 <= self.rect.x <= self.game.xPosSlowCars[i] + playerPixelWidth - 10):
                 self.game.gameIsOver = True
 
 class SlowCar(pg.sprite.Sprite):
@@ -96,13 +95,12 @@ class SlowCar(pg.sprite.Sprite):
         self.car = pg.image.load("imgs/race_car_0.png").convert()
         self.image = self.car
         self.image = pg.Surface((playerPixelWidth, playerPixelHeight))
-        self.image.set_colorkey((255, 255, 255))
-        self.image.blit(self.car, (0, 0))
+        self.image.set_colorkey((255,255,255))
+        self.image.blit(self.car, (0,0))
 
         self.rect = self.car.get_rect()
         self.rect.x = self.x
         self.rect.y = self.y
-
 
     def update(self):
         # Moves car back up to top
@@ -122,14 +120,15 @@ class SlowCar(pg.sprite.Sprite):
         self.yChange += 2 + self.game.acceleration
 
 
+
     def respawn(self):
         t = 0
-        while True:
+        while(True):
             y = rand.randint(-2800, -100)
             for i in self.game.yPosSlowCars:
                 if not (-1*playerPixelHeight*2 + i <= y <= playerPixelHeight*2 + i):
-                    t += 1
-            if t >= len(self.game.yPosSlowCars):
+                    t+=1
+            if(t >= len(self.game.yPosSlowCars)):
                 break
             else:
                 t = 0
