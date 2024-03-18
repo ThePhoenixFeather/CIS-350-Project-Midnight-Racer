@@ -62,7 +62,7 @@ def updatePhysics(startTime, accelConstant):
 
 def mainMenuState(screen, Clock):
     mainMenuRun = True
-    startB = Button((60, 40, 40), 115, 290, 280, 100, "", "imgs/race_car_0.png")    # Allows for buttons to display images
+    startB = Button((60, 40, 40), 115, 290, 280, 100, "", "imgs/ford.jpg")    # Allows for buttons to display images
     scoreB = Button((60, 40, 40), 115, 410, 280, 100, "Scoreboard")
     settingsB = Button((60, 40, 40), 115, 530, 280, 100, "Settings")
     quitB = Button((60, 40, 40), 115, 650, 280, 100, "Quit")

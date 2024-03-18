@@ -20,7 +20,8 @@ class Player(pg.sprite.Sprite):
         self.xChange = 0
         self.yChange = 0
 
-        self.car = pg.image.load("imgs/race_car_0.png").convert()
+        self.car = pg.image.load("imgs/race_car_9.png").convert()
+        self.car = pg.transform.scale(self.car, (playerPixelWidth,playerPixelHeight))
 
 
         #self.car = pg.transform.scale(self.car, (self.width, self.height))
