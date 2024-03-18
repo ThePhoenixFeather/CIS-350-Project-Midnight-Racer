@@ -33,12 +33,13 @@ class Button:
         if self.imageLocation != '':
             image = pygame.image.load(self.imageLocation).convert()
             image = pygame.transform.scale(image, (self.width, self.height))
-            font = pygame.font.SysFont('Times New Roman', 60)
+            font = pygame.font.Font('font/ARCADECLASSIC.TTF',50)
             text = font.render(self.text, 1, (0, 0, 0))
             win.blit(image, (self.x, self.y))
 
         if self.text != '':
-            font = pygame.font.SysFont('Times New Roman', 60)
+            font = pygame.font.Font('font/ARCADECLASSIC.TTF',50)
+            #font = pygame.font.SysFont('Times New Roman', 60)
             text = font.render(self.text, 1, (0, 0, 0))
             win.blit(text,
                      (self.x + (self.width / 2 - text.get_width() / 2), self.y + (self.height / 2 - text.get_height() / 2)))
