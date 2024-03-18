@@ -126,7 +126,7 @@ class SlowCar(pg.sprite.Sprite):
         i = 0
         while(True):
             i+=1
-            y = rand.randint(-4500, -100)
+            y = rand.randint(-4700, -100)
             for i in self.game.yPosSlowCars:
                 if not (-1*playerPixelHeight*2 + i <= y <= playerPixelHeight*2 + i):
                     t+=1

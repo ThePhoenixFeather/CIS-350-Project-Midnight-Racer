@@ -28,10 +28,12 @@ class Button:
         if outline:
             pygame.draw.rect(win, outline, (self.x - 2, self.y - 2, self.width + 4, self.height + 4), 0)
 
-        pygame.draw.rect(win, self.color, (self.x, self.y, self.width, self.height), 0)
+        if self.imageLocation == '':
+            pygame.draw.rect(win, self.color, (self.x, self.y, self.width, self.height), 0)
 
         if self.imageLocation != '':
             image = pygame.image.load(self.imageLocation).convert()
+            image.set_colorkey((255, 255, 255))
             image = pygame.transform.scale(image, (self.width, self.height))
             font = pygame.font.Font('font/ARCADECLASSIC.TTF',50)
             text = font.render(self.text, 1, (0, 0, 0))
@@ -63,10 +65,10 @@ def updatePhysics(startTime, accelConstant):
 
 def mainMenuState(screen, Clock):
     mainMenuRun = True
-    startB = Button((60, 40, 40), 115, 290, 280, 100, "", "imgs/ford.jpg")    # Allows for buttons to display images
-    scoreB = Button((60, 40, 40), 115, 410, 280, 100, "Scoreboard")
-    settingsB = Button((60, 40, 40), 115, 530, 280, 100, "Settings")
-    quitB = Button((60, 40, 40), 115, 650, 280, 100, "Quit")
+    startB = Button((60, 40, 40), 115, 290, 310, 100, "START", "imgs/startB.png")    # Allows for buttons to display images
+    scoreB = Button((60, 40, 40), 115, 410, 310, 100, "Scoreboard", "imgs/button.png")
+    settingsB = Button((60, 40, 40), 115, 530, 310, 100, "Settings", "imgs/button.png")
+    quitB = Button((60, 40, 40), 115, 750, 290, 100, "Quit", "imgs/xit.png")
 
     bg = pygame.image.load("imgs/option3.JPG").convert()
     bg = pygame.transform.scale(bg, resolution)
@@ -151,15 +153,20 @@ def mainMenuState(screen, Clock):
 
 def gameOverState(screen, Clock):
     gameOverRun = True
-    youCrashed = Button((255, 40, 40), 115, 100, 280, 100, "You Crashed!")
-    mainMenuB = Button((60, 40, 40), 115, 220, 280, 100, "Main Menu")
-    restartB = Button((60, 40, 40), 115, 330, 280, 100, "Restart")
-    quitB = Button((60, 40, 40), 115, 450, 280, 100, "Quit")
+
+    font = pygame.font.Font('font/ARCADECLASSIC.TTF',70)
+    gameOver = font.render("GAME  OVER!", True, (0,0,0))
+    youCrashed = Button((255, 255, 255), -100, -20, 700, 350, "You Crashed")
+    mainMenuB = Button((60, 40, 40), 115, 370, 280, 100, "Main Menu", "imgs/button.png")
+    restartB = Button((60, 40, 40), 115, 480, 280, 100, "Restart", "imgs/button.png")
+    quitB = Button((60, 40, 40), 115, 600, 280, 100, "Quit", "imgs/xit.png")
 
     youCrashed.draw(screen)
     mainMenuB.draw(screen)
     restartB.draw(screen)
     quitB.draw(screen)
+    screen.blit(gameOver, (85,50))
+
     choice = 0
 
     mainMenuBClick = False
