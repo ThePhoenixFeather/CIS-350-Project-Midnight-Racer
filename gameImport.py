@@ -65,10 +65,10 @@ def updatePhysics(startTime, accelConstant):
 
 def mainMenuState(screen, Clock):
     mainMenuRun = True
-    startB = Button((60, 40, 40), 115, 290, 310, 100, "START", "imgs/startB.png")    # Allows for buttons to display images
-    scoreB = Button((60, 40, 40), 115, 410, 310, 100, "Scoreboard", "imgs/button.png")
-    settingsB = Button((60, 40, 40), 115, 530, 310, 100, "Settings", "imgs/button.png")
-    quitB = Button((60, 40, 40), 115, 750, 290, 100, "Quit", "imgs/xit.png")
+    startB = Button((60, 40, 40), resolution[0]/2-310/2, 290, 310, 100, "START", "imgs/startB.png")    # Allows for buttons to display images
+    scoreB = Button((60, 40, 40), resolution[0]/2-310/2, 410, 310, 100, "Scoreboard", "imgs/button.png")
+    settingsB = Button((60, 40, 40), resolution[0]/2-310/2, 530, 310, 100, "Settings", "imgs/button.png")
+    quitB = Button((60, 40, 40), resolution[0]/2-310/2, 750, 310, 100, "Quit", "imgs/xit.png")
 
     bg = pygame.image.load("imgs/option3.JPG").convert()
     bg = pygame.transform.scale(bg, resolution)
@@ -114,7 +114,7 @@ def mainMenuState(screen, Clock):
         if quitBClick == True and mouseButtons()[0] == False:
             mainMenuRun = False
             pygame.quit()
-
+            quit()
 
 
         # Checks if button has been pressed
@@ -155,23 +155,25 @@ def gameOverState(screen, Clock):
     gameOverRun = True
 
     font = pygame.font.Font('font/ARCADECLASSIC.TTF',70)
-    gameOver = font.render("GAME  OVER!", True, (0,0,0))
-    youCrashed = Button((255, 255, 255), -100, -20, 700, 350, "You Crashed")
+    smallFont = pygame.font.Font('font/ARCADECLASSIC.TTF', 50)
+    gameOver = font.render("GAME  OVER!", True, (255,0,0))
+    youCrashed = smallFont.render("YOU CRASHED", True, (0,0,0))
     mainMenuB = Button((60, 40, 40), 115, 370, 280, 100, "Main Menu", "imgs/button.png")
     restartB = Button((60, 40, 40), 115, 480, 280, 100, "Restart", "imgs/button.png")
     quitB = Button((60, 40, 40), 115, 600, 280, 100, "Quit", "imgs/xit.png")
 
-    youCrashed.draw(screen)
+    #youCrashed.draw(screen)
     mainMenuB.draw(screen)
     restartB.draw(screen)
     quitB.draw(screen)
     screen.blit(gameOver, (85,50))
-
+    screen.blit(youCrashed, (105, 130))
     choice = 0
 
     mainMenuBClick = False
     restartBClick = False
     quitBClick = False
+
 
     while gameOverRun:
         Clock.tick(30)
@@ -194,8 +196,7 @@ def gameOverState(screen, Clock):
 
         if quitBClick == True and mouseButtons()[0] == False:
             pygame.quit()
-            gameOverRun = False
-            break
+            quit()
 
         if mainMenuB.isOver(mousePos()) == True and mouseButtons()[0] == True:
                 mainMenuBClick = True

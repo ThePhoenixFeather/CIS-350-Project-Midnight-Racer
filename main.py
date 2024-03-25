@@ -30,7 +30,7 @@ class Game:
         pg.mixer.music.set_volume(0.05)
         pg.mixer.music.play(loops=-1)
 
-        self.cScore = Button((255,255,255),0,820,300,80,"Score ")
+        self.cScore = Button((255,255,255),0,920,300,80,"Score ")
 
         self.allSprites  = pg.sprite.LayeredUpdates() # OBJECT CONTAINING ALL SPRITES
         self.walls = pg.sprite.LayeredUpdates() # OBJECT CONTAINING ALL WALL SPRITES
