@@ -22,17 +22,17 @@ class Game:
     def newGame(self):  # A NEW GAME BEGINS
         self.playing = True
         # Load Background
-        self.bg = pg.image.load("imgs\pixelroad2.PNG").convert()
-        #self.bg = pg.transform.rotate(self.bg, 90)
+        self.bg = pg.image.load("imgs\pixelroad.PNG").convert()
+        self.bg = pg.transform.rotate(self.bg, 90)
         self.bg = pg.transform.scale(self.bg, resolution)
 
         pg.mixer.music.load("audio\Juval - Play Your Game.mp3")
         pg.mixer.music.set_volume(0.05)
         pg.mixer.music.play(loops=-1)
 
-        self.cScore = Button((255,255,255),0,920,300,80,"Score ")
+        self.cScore = Button((255, 255, 255), 0, 920, 300, 80, "Score ")
 
-        self.allSprites  = pg.sprite.LayeredUpdates() # OBJECT CONTAINING ALL SPRITES
+        self.allSprites = pg.sprite.LayeredUpdates() # OBJECT CONTAINING ALL SPRITES
         self.walls = pg.sprite.LayeredUpdates() # OBJECT CONTAINING ALL WALL SPRITES
         self.slowCars = pg.sprite.LayeredUpdates() # OBJECT CONTAINING ALL SLOW CAR SPRITES
         self.player = Player(self, resolution[0]/2-playerPixelWidth/2, resolution[1]-playerPixelHeight-playerPixelHeight/2)
@@ -57,7 +57,7 @@ class Game:
         self.xPosSlowCars = [self.car1.rect.x, self.car2.rect.x, self.car3.rect.x, self.car4.rect.x, self.car5.rect.x, self.car6.rect.x, self.car7.rect.x, self.car8.rect.x, self.car9.rect.x]
 
 
-        self.bgHeight= self.bg.get_height()
+        self.bgHeight = self.bg.get_height()
         self.bgNeeded = mt.ceil(resolution[1]/self.bgHeight) + 1
         self.scroll = 0
         self.gameScore = 0
@@ -68,7 +68,6 @@ class Game:
         for i in self.carList:
             i.respawn()
             self.update()
-
 
 
     def events(self):
@@ -86,12 +85,15 @@ class Game:
 
     def draw(self):
 
+        # score screen
+
+
         # draw scrolling background
         for i in range(0, self.bgNeeded):
             self.screen.blit(self.bg, (0, i * -1*self.bgHeight + self.scroll))
 
         # scroll background
-        self.scroll += 5 + self.acceleration
+        self.scroll += 7 + self.acceleration
 
         #reset scroll
 
@@ -99,11 +101,7 @@ class Game:
             self.scroll = 0
 
         self.allSprites.draw(self.screen)
-        if self.acceleration <= 12.5:
-            self.acceleration += accelConstant
-        else:
-            self.acceleration += accelConstant/100
-
+        self.acceleration += 0.0015
         self.Clock.tick(fps)
 
         self.cScore.text = "Score " + str(self.score)
@@ -115,7 +113,6 @@ class Game:
         self.main()
 
     def main(self):
-
         if self.choice == 0:
             game.mainMenu()
         game.newGame()
@@ -124,7 +121,9 @@ class Game:
             self.events()
             self.update()
             self.draw()
-            if self.gameIsOver == True:
+            pygame.display.set_caption("Score: " + str(self.score))
+            if self.gameIsOver:
+                sc.updateScoreboard(self.score, self.score * self.acceleration * 8, self.acceleration)
                 self.choice = self.gameOver()
                 self.playing = False
                 self.restart()

@@ -1,5 +1,7 @@
 import pygame
 import time as tm
+import scoreboard as sc
+import settings as setting
 from config import *
 
 
@@ -8,8 +10,6 @@ def mousePos():
 
 def mouseButtons():
     return pygame.mouse.get_pressed()
-
-
 
 
 class Button:
@@ -35,12 +35,12 @@ class Button:
             image = pygame.image.load(self.imageLocation).convert()
             image.set_colorkey((255, 255, 255))
             image = pygame.transform.scale(image, (self.width, self.height))
-            font = pygame.font.Font('font/ARCADECLASSIC.TTF',50)
+            font = pygame.font.Font('font/ARCADECLASSIC.TTF', 50)
             text = font.render(self.text, 1, (0, 0, 0))
             win.blit(image, (self.x, self.y))
 
         if self.text != '':
-            font = pygame.font.Font('font/ARCADECLASSIC.TTF',50)
+            font = pygame.font.Font('font/ARCADECLASSIC.TTF', 50)
             #font = pygame.font.SysFont('Times New Roman', 60)
             text = font.render(self.text, 1, (0, 0, 0))
             win.blit(text,
@@ -55,9 +55,9 @@ class Button:
         return False
 
 
-def updatePhysics(startTime, accelConstant):
+def updatePhysics(startTime, accelConstant_Import):
     timeReturn = tm.time() - startTime
-    currentSpeedReturn = accelConstant * timeReturn
+    currentSpeedReturn = accelConstant_Import * timeReturn
     distanceReturn = .5 * currentSpeedReturn * timeReturn
 
     return timeReturn, currentSpeedReturn, distanceReturn
@@ -65,6 +65,9 @@ def updatePhysics(startTime, accelConstant):
 
 def mainMenuState(screen, Clock):
     mainMenuRun = True
+
+    pygame.display.set_caption("Main Menu")
+
     startB = Button((60, 40, 40), resolution[0]/2-310/2, 290, 310, 100, "START", "imgs/startB.png")    # Allows for buttons to display images
     scoreB = Button((60, 40, 40), resolution[0]/2-310/2, 410, 310, 100, "Scoreboard", "imgs/button.png")
     settingsB = Button((60, 40, 40), resolution[0]/2-310/2, 530, 310, 100, "Settings", "imgs/button.png")
@@ -76,7 +79,7 @@ def mainMenuState(screen, Clock):
 
     titleScreen = pygame.image.load("imgs/titleScreen.png").convert()
     titleScreen.set_colorkey((0, 0, 0))
-    titleScreen = pygame.transform.scale(titleScreen, (350,250))
+    titleScreen = pygame.transform.scale(titleScreen, (350, 250))
     screen.blit(titleScreen, (80, 20))
 
     startB.draw(screen)
@@ -99,50 +102,102 @@ def mainMenuState(screen, Clock):
                 mainMenuRun = False
                 pygame.quit()
 
-
         # Checks if button is pressed has been pressed and then released.
-        if startBClick == True and mouseButtons()[0] == False:
+        if startBClick and mouseButtons()[0] is False:
             mainMenuRun = False
 
-        if scoreBClick == True and mouseButtons()[0] == False:
-            pass
-            # Score board engage here
-
-        if settingsBClick == True and mouseButtons()[0] == False:
+        if scoreBClick and mouseButtons()[0] is False:
             pass
 
-        if quitBClick == True and mouseButtons()[0] == False:
+        if settingsBClick and mouseButtons()[0] is False:
+            pass
+
+        if quitBClick and mouseButtons()[0] is False:
             mainMenuRun = False
             pygame.quit()
             quit()
 
 
         # Checks if button has been pressed
-        if startB.isOver(mousePos()) == True and mouseButtons()[0] == True:
+        if startB.isOver(mousePos()) and mouseButtons()[0]:
             startBClick = True
         else:
             startBClick = False
 
-        if scoreB.isOver(mousePos()) == True and mouseButtons()[0] == True:
+        if scoreB.isOver(mousePos()) and mouseButtons()[0]:
             scoreBClick = True
         else:
             scoreBClick = False
 
-        if settingsB.isOver(mousePos()) == True and mouseButtons()[0] == True:
+        if settingsB.isOver(mousePos()) and mouseButtons()[0]:
             settingsBClick = True
         else:
             settingsBClick = False
 
-
-        if settingsB.isOver(mousePos()) == True and mouseButtons()[0] == True:
-            settingsBClick = True
-        else:
-            settingsBClick = False
-
-        if quitB.isOver(mousePos()) == True and mouseButtons()[0] == True:
+        if quitB.isOver(mousePos()) and mouseButtons()[0]:
             quitBClick = True
         else:
             quitBClick = False
+
+        if scoreBClick:
+            del startB
+            del scoreB
+            del settingsB
+            del quitB
+
+            sc.scoreboardRun(screen, Clock)
+
+            mainMenuRun = True
+            scoreBClick = False
+            startB = Button((60, 40, 40), resolution[0] / 2 - 310 / 2, 290, 310, 100, "START",
+                            "imgs/startB.png")  # Allows for buttons to display images
+            scoreB = Button((60, 40, 40), resolution[0] / 2 - 310 / 2, 410, 310, 100, "Scoreboard", "imgs/button.png")
+            settingsB = Button((60, 40, 40), resolution[0] / 2 - 310 / 2, 530, 310, 100, "Settings", "imgs/button.png")
+            quitB = Button((60, 40, 40), resolution[0] / 2 - 310 / 2, 750, 310, 100, "Quit", "imgs/xit.png")
+
+            bg = pygame.image.load("imgs/option3.JPG").convert()
+            bg = pygame.transform.scale(bg, resolution)
+            screen.blit(bg, (0, 0))
+
+            titleScreen = pygame.image.load("imgs/titleScreen.png").convert()
+            titleScreen.set_colorkey((0, 0, 0))
+            titleScreen = pygame.transform.scale(titleScreen, (350, 250))
+            screen.blit(titleScreen, (80, 20))
+
+            startB.draw(screen)
+            scoreB.draw(screen)
+            settingsB.draw(screen)
+            quitB.draw(screen)
+
+        if settingsBClick:
+            del startB
+            del scoreB
+            del settingsB
+            del quitB
+
+            setting.settingsRun()  # finish later
+
+            mainMenuRun = True
+            settingsBClick = False
+            startB = Button((60, 40, 40), resolution[0] / 2 - 310 / 2, 290, 310, 100, "START",
+                            "imgs/startB.png")  # Allows for buttons to display images
+            scoreB = Button((60, 40, 40), resolution[0] / 2 - 310 / 2, 410, 310, 100, "Scoreboard", "imgs/button.png")
+            settingsB = Button((60, 40, 40), resolution[0] / 2 - 310 / 2, 530, 310, 100, "Settings", "imgs/button.png")
+            quitB = Button((60, 40, 40), resolution[0] / 2 - 310 / 2, 750, 310, 100, "Quit", "imgs/xit.png")
+
+            bg = pygame.image.load("imgs/option3.JPG").convert()
+            bg = pygame.transform.scale(bg, resolution)
+            screen.blit(bg, (0, 0))
+
+            titleScreen = pygame.image.load("imgs/titleScreen.png").convert()
+            titleScreen.set_colorkey((0, 0, 0))
+            titleScreen = pygame.transform.scale(titleScreen, (350, 250))
+            screen.blit(titleScreen, (80, 20))
+
+            startB.draw(screen)
+            scoreB.draw(screen)
+            settingsB.draw(screen)
+            quitB.draw(screen)
 
     del startB
     del scoreB
@@ -154,10 +209,10 @@ def mainMenuState(screen, Clock):
 def gameOverState(screen, Clock):
     gameOverRun = True
 
-    font = pygame.font.Font('font/ARCADECLASSIC.TTF',70)
+    font = pygame.font.Font('font/ARCADECLASSIC.TTF', 70)
     smallFont = pygame.font.Font('font/ARCADECLASSIC.TTF', 50)
-    gameOver = font.render("GAME  OVER!", True, (255,0,0))
-    youCrashed = smallFont.render("YOU CRASHED", True, (0,0,0))
+    gameOver = font.render("GAME  OVER!", True, (255, 0, 0))
+    youCrashed = smallFont.render("YOU CRASHED", True, (0, 0, 0))
     mainMenuB = Button((60, 40, 40), 115, 370, 280, 100, "Main Menu", "imgs/button.png")
     restartB = Button((60, 40, 40), 115, 480, 280, 100, "Restart", "imgs/button.png")
     quitB = Button((60, 40, 40), 115, 600, 280, 100, "Quit", "imgs/xit.png")
@@ -166,7 +221,7 @@ def gameOverState(screen, Clock):
     mainMenuB.draw(screen)
     restartB.draw(screen)
     quitB.draw(screen)
-    screen.blit(gameOver, (85,50))
+    screen.blit(gameOver, (85, 50))
     screen.blit(youCrashed, (105, 130))
     choice = 0
 
@@ -186,26 +241,26 @@ def gameOverState(screen, Clock):
                 pygame.quit()
 
 
-        if mainMenuBClick == True and mouseButtons()[0] == False:
+        if mainMenuBClick and mouseButtons()[0] is False:
             choice = 0
             break
 
-        if restartBClick == True and mouseButtons()[0] == False:
+        if restartBClick and mouseButtons()[0] is False:
             choice = 1
             break
 
-        if quitBClick == True and mouseButtons()[0] == False:
+        if quitBClick and mouseButtons()[0] is False:
             pygame.quit()
             quit()
 
-        if mainMenuB.isOver(mousePos()) == True and mouseButtons()[0] == True:
-                mainMenuBClick = True
+        if mainMenuB.isOver(mousePos()) and mouseButtons()[0]:
+            mainMenuBClick = True
 
-        if restartB.isOver(mousePos()) == True and mouseButtons()[0] == True:
-                restartBClick = True
+        if restartB.isOver(mousePos()) and mouseButtons()[0]:
+            restartBClick = True
 
-        if quitB.isOver(mousePos()) == True and mouseButtons()[0] == True:
-                quitBClick = True
+        if quitB.isOver(mousePos()) and mouseButtons()[0]:
+            quitBClick = True
 
     del youCrashed
     del mainMenuB
