@@ -160,7 +160,7 @@ def scoreboardRun(screen, Clock):
         textRect.center = (500//2, 1000//2)
 
     else:
-        # Print out the scoreboard information here (on the display). Include a button to return to end the scoreboardRun section.
+        # Print out the scoreboard information here (on the display). Includes a button to end the scoreboardRun section.
         display_surface = pygame.display.set_mode(resolution)
 
         pygame.display.set_caption("Scoreboard")
@@ -281,6 +281,17 @@ def scoreboardRun(screen, Clock):
 
     display_surface.fill(black)
 
+    bg = pygame.image.load("imgs/pixelroad.PNG").convert()
+    bg = pygame.transform.scale(bg, resolution)
+    screen.blit(bg, (0, 0))
+
+    if scoreboard[0].score <= 0:
+        scorebg = Button((128, 40, 40), 75, 475, 350, 50, '', "")
+        scorebg.draw(screen)
+    else:
+        scorebg = Button((128, 40, 40), 130, 60, 240, 870, '', "")
+        scorebg.draw(screen)
+
     if isScores == 0:
         display_surface.blit(text, textRect)
     else:
@@ -308,7 +319,7 @@ def scoreboardRun(screen, Clock):
             display_surface.blit(text14, textRect14)
             display_surface.blit(text15, textRect15)
 
-    exitb = Button((60, 40, 40), 1, 1, 100, 100, 'BACK', "imgs/button.png")
+    exitb = Button((60, 40, 40), 1, 1, 120, 120, 'BACK', "imgs/button.png")
 
     exitb.draw(screen)
     exitbClick = False
