@@ -281,7 +281,7 @@ def scoreboardRun(screen, Clock):
 
     display_surface.fill(black)
 
-    bg = pygame.image.load("imgs/pixelroad.PNG").convert()
+    bg = pygame.image.load("imgs/pixelroad1.PNG").convert()
     bg = pygame.transform.scale(bg, resolution)
     screen.blit(bg, (0, 0))
 

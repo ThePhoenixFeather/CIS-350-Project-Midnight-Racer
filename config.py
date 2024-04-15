@@ -3,7 +3,7 @@ carPosition = 1
 points = 0
 accelConstant = 0.0015
 fps = 60
-resolution = (500,1000)
+resolution = (500, 1000)
 
 playerControlSpeed = 5
 playerLayer = 1

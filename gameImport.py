@@ -1,7 +1,7 @@
 import pygame
 import time as tm
 import scoreboard as sc
-import settings as setting
+#import settings as setting
 from config import *
 
 
