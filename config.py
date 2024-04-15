@@ -4,7 +4,7 @@ speed = 1
 points = 0
 accelConstant = 1.1
 fps = 60
-resolution = (500,1000)
+resolution = (500, 1000)
 
 playerControlSpeed = 5
 playerLayer = 1
