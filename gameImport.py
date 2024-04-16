@@ -73,7 +73,7 @@ def mainMenuState(screen, Clock):
     settingsB = Button((60, 40, 40), resolution[0]/2-310/2, 530, 310, 100, "Settings", "imgs/button.png")
     quitB = Button((60, 40, 40), resolution[0]/2-310/2, 750, 310, 100, "Quit", "imgs/xit.png")
 
-    bg = pygame.image.load("imgs/option3.JPG").convert()
+    bg = pygame.image.load("imgs/bg.png").convert()
     bg = pygame.transform.scale(bg, resolution)
     screen.blit(bg, (0, 0))
 
@@ -175,7 +175,7 @@ def mainMenuState(screen, Clock):
             del settingsB
             del quitB
 
-            setting.settingsRun()  # finish later
+            #setting.settingsRun()  # finish later
 
             mainMenuRun = True
             settingsBClick = False
@@ -185,7 +185,7 @@ def mainMenuState(screen, Clock):
             settingsB = Button((60, 40, 40), resolution[0] / 2 - 310 / 2, 530, 310, 100, "Settings", "imgs/button.png")
             quitB = Button((60, 40, 40), resolution[0] / 2 - 310 / 2, 750, 310, 100, "Quit", "imgs/xit.png")
 
-            bg = pygame.image.load("imgs/option3.JPG").convert()
+            bg = pygame.image.load("imgs/bg.png").convert()
             bg = pygame.transform.scale(bg, resolution)
             screen.blit(bg, (0, 0))
 
