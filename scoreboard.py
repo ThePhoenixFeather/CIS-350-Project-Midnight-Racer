@@ -30,7 +30,7 @@ class Button:
             win.blit(image, (self.x, self.y))
 
         if self.text != '':
-            font = pygame.font.Font('font/ARCADECLASSIC.TTF', 50)
+            font = pygame.font.Font('font/ARCADECLASSIC.TTF', 40)
             text = font.render(self.text, 1, (0, 0, 0))
             win.blit(text,
                      (self.x + (self.width / 2 - text.get_width() / 2),
