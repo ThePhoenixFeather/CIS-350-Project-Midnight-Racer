@@ -12,8 +12,10 @@ class Game:
         self.running = True
         self.choice = 0
 
+
     def gameOver(self):
         return gameOverState(self.screen, self.Clock)
+
 
     def mainMenu(self):
         mainMenuState(self.screen, self.Clock)
@@ -65,11 +67,11 @@ class Game:
         self.gameIsOver = False
         #self.respawnAllCars()
 
+
     def respawnAllCars(self):
         for i in self.carList:
             i.respawn()
             self.update()
-
 
 
     def events(self):
@@ -112,11 +114,12 @@ class Game:
 
         pg.display.update()
 
+
     def restart(self):
         self.main()
 
-    def main(self):
 
+    def main(self):
         if self.choice == 0:
             game.mainMenu()
         game.newGame()
@@ -125,18 +128,17 @@ class Game:
             self.events()
             self.update()
             self.draw()
-            if self.gameIsOver == True:
+            pygame.display.set_caption("Score: " + str(self.score))
+            if self.gameIsOver:
+                sc.updateScoreboard(self.score, self.score * self.acceleration * 8, self.acceleration)
                 self.choice = self.gameOver()
                 self.playing = False
                 self.restart()
-
-
 
         self.running = False
 
 
 game = Game()
 game.main()
-
 
 pygame.quit()

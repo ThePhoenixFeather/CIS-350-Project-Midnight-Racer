@@ -1,4 +1,3 @@
-import pygame
 from gameImport import *
 from config import *
 
@@ -58,12 +57,15 @@ class Score:
         self.max_distance = new_dist
         self.speed = new_speed
 
+# Gets an input on where the mouse cursor is at on the screen
 def mousePosScore():
     return pygame.mouse.get_pos()
 
+# Gets a bool input on whether a certain mouse button has been pressed
 def mouseButtonsScore():
     return pygame.mouse.get_pressed()
 
+# Array of scores
 scores = [Score(), Score(), Score(), Score(), Score()]
 
 
@@ -80,6 +82,7 @@ def setScores(s1, s2, s3, s4, s5):
     scores[3] = s4
     scores[4] = s5
 
+# Used to unsure that ONLY values are being copied to a holder variable as opposed to the reference to a score variable.
 def setScore(s1):
     hold = Score(s1.score, s1.max_distance, s1.speed)
     return hold
@@ -93,8 +96,7 @@ def updateScoreboard(cur_score, cur_dist, cur_speed):
     s4 = getScores(3)
     s5 = getScores(4)
 
-    # use when there are scores in all the 5 positions on the scoreboard
-
+    # This if / elif section helps to sort the scores that are received. Only score is the de
     if cur_score >= s1.score >= 0:
         holder1 = setScore(s1)
         s1.set_board_info(cur_score, cur_dist, cur_speed)
@@ -130,171 +132,207 @@ def updateScoreboard(cur_score, cur_dist, cur_speed):
     elif cur_score >= s5.score > 0:
         s5.set_board_info(cur_score, cur_dist, cur_speed)
 
+    # Sets the updated and sorted scores to the scoreboard array
     setScores(s1, s2, s3, s4, s5)
 
-
+# This is essentially the main function of scoreboard. This is the meat and potatoes of scoreboard's display.
 def scoreboardRun(screen, Clock):
-
+    # Flips the Pygame display and creates a boolean value that tracks if the scoreboard should remain active.
     scoreBoardActive = True
     pygame.display.flip()
 
+    # Value to tell the program if a score has been recorded at least once.
     isScores = 0
 
+    # Various Color Tuples
+    white = (255, 255, 255)
     black = (0, 0, 0)
-    green = (0, 255, 0)
-    blue = (0, 0, 128)
+    # green = (0, 255, 0)
+    # blue = (0, 0, 128)
 
+    # Array that holds score class variables.
     scoreboard = [getScores(0), getScores(1), getScores(2), getScores(3), getScores(4)]
 
+    # checks if the score is at 0 or below in case of an error
     if scoreboard[0].score == 0 or scoreboard[0].score < 0:
+
+        # Creates a surface that is the size of our resolution config size.
         display_surface = pygame.display.set_mode(resolution)
 
+        # Sets the display caption to Scoreboard
         pygame.display.set_caption("Scoreboard")
 
-        font = pygame.font.Font('freesansbold.ttf', 20)
+        # Initializes the font type and size
+        font = pygame.font.Font('freesansbold.ttf', 25)
 
-        text = font.render('There are no scores to display yet.', True, green, blue)
+        # Initializes the text that will be displayed, as well as the text and background color.
+        text = font.render('There are no scores to display yet', True, white, black)
 
+        # Creates the text in a rectangle form.
         textRect = text.get_rect()
 
+        # Sets the text to be placed at the center of the display
         textRect.center = (500//2, 1000//2)
 
+    # if there is a score and there is no out-of-bounds type of error, does this
     else:
+
         # Print out the scoreboard information here (on the display). Includes a button to end the scoreboardRun section.
         display_surface = pygame.display.set_mode(resolution)
 
+        # Sets the window caption to be Scoreboard
         pygame.display.set_caption("Scoreboard")
 
-        font = pygame.font.Font('freesansbold.ttf', 16)
+        # Sets the font that will be used in future text.
+        font = pygame.font.Font('freesansbold.ttf', 20)
 
+        # Gets the scores of each individual score in the array and stores it into the 5 different values.
         scores1 = getScores(0)
         scores2 = getScores(1)
         scores3 = getScores(2)
         scores4 = getScores(3)
         scores5 = getScores(4)
 
-        scoreDisplay1 = "The Highest score is " + str(scores1.score // 1)
-        scoreDisplay2 = "with a distance of " + str(scores1.max_distance // 1)
-        scoreDisplay3 = "and an acceleration of " + str(scores1.speed // 1)
+        # Displays the Current Highest Score
+        scoreDisplay1 = f"The Highest score is {scores1.score}"
+        scoreDisplay2 = f"with a distance of {scores1.max_distance:.2f}"
+        scoreDisplay3 = f"and an acceleration of {scores1.speed:.2f}"
 
+        # if there is a score in second place, do this.
         if scores2.score > 0:
-            scoreDisplay4 = "Second Place score is " + str(scores2.score // 1)
-            scoreDisplay5 = "with a distance of " + str(scores2.max_distance // 1)
-            scoreDisplay6 = "and an acceleration of " + str(scores2.speed // 1)
+            scoreDisplay4 = f"Second Place score is {scores2.score}"
+            scoreDisplay5 = f"with a distance of {scores2.max_distance:.2f}"
+            scoreDisplay6 = f"and an acceleration of {scores2.speed:.2f}"
 
+        # if there is a score in third place, do this.
         if scores3.score > 0:
-            scoreDisplay7 = "Third Place score is " + str(scores3.score // 1)
-            scoreDisplay8 = "with a distance of " + str(scores3.max_distance // 1)
-            scoreDisplay9 = "and an acceleration of " + str(scores3.speed // 1)
+            scoreDisplay7 = f"Third Place score is {scores3.score}"
+            scoreDisplay8 = f"with a distance of {scores3.max_distance:.2f}"
+            scoreDisplay9 = f"and an acceleration of {scores3.speed:.2f}"
 
+        # if there is a score in fourth place, do this.
         if scores4.score > 0:
-            scoreDisplay10 = "Fourth Place score is " + str(scores4.score // 1)
-            scoreDisplay11 = "with a distance of " + str(scores4.max_distance // 1)
-            scoreDisplay12 = "and an acceleration of " + str(scores4.speed // 1)
+            scoreDisplay10 = f"Fourth Place score is {scores4.score}"
+            scoreDisplay11 = f"with a distance of {scores4.max_distance:.2f}"
+            scoreDisplay12 = f"and an acceleration of {scores4.speed:.2f}"
 
+        # if there is a score in fifth place, do this.
         if scores5.score > 0:
-            scoreDisplay13 = "Fifth Place score is " + str(scores5.score // 1)
-            scoreDisplay14 = "with a distance of " + str(scores5.max_distance // 1)
-            scoreDisplay15 = "and an acceleration of " + str(scores5.speed // 1)
+            scoreDisplay13 = f"Fifth Place score is {scores5.score}"
+            scoreDisplay14 = f"with a distance of {scores5.max_distance:.2f}"
+            scoreDisplay15 = f"and an acceleration of {scores5.speed:.2f}"
 
-        text1 = font.render(scoreDisplay1, True, green, blue)
+        # All below sections create the text display backgrounds for each text object. This creates the text display, but not on the screen.
+        text1 = font.render(scoreDisplay1, True, white, black)
         textRect1 = text1.get_rect()
-        textRect1.center = (500 // 2, 80)
+        textRect1.center = (360, 80)
 
-        text2 = font.render(scoreDisplay2, True, green, blue)
+        text2 = font.render(scoreDisplay2, True, white, black)
         textRect2 = text2.get_rect()
-        textRect2.center = (500 // 2, 140)
+        textRect2.center = (360, 140)
 
-        text3 = font.render(scoreDisplay3, True, green, blue)
+        text3 = font.render(scoreDisplay3, True, white, black)
         textRect3 = text3.get_rect()
-        textRect3.center = (500 // 2, 200)
+        textRect3.center = (360, 200)
 
+        # Does this if there is a score in scores2.
         if scores2.score > 0:
-            textspacer1 = font.render("------------------------------------------", True, green, blue)
+            textspacer1 = font.render("------------------------------------------", True, white, black)
             textRectSpacer1 = textspacer1.get_rect()
-            textRectSpacer1.center = (500 // 2, 230)
+            textRectSpacer1.center = (360, 230)
 
-            text4 = font.render(scoreDisplay4, True, green, blue)
+            text4 = font.render(scoreDisplay4, True, white, black)
             textRect4 = text4.get_rect()
-            textRect4.center = (500 // 2, 260)
+            textRect4.center = (360, 260)
 
-            text5 = font.render(scoreDisplay5, True, green, blue)
+            text5 = font.render(scoreDisplay5, True, white, black)
             textRect5 = text5.get_rect()
-            textRect5.center = (500 // 2, 320)
+            textRect5.center = (360, 320)
 
-            text6 = font.render(scoreDisplay6, True, green, blue)
+            text6 = font.render(scoreDisplay6, True, white, black)
             textRect6 = text6.get_rect()
-            textRect6.center = (500 // 2, 380)
+            textRect6.center = (360, 380)
 
+        # Does this if there is a score in scores3.
         if scores3.score > 0:
-            textspacer2 = font.render("-----------------------------------------", True, green, blue)
+            textspacer2 = font.render("------------------------------------------", True, white, black)
             textRectSpacer2 = textspacer2.get_rect()
-            textRectSpacer2.center = (500 // 2, 410)
+            textRectSpacer2.center = (360, 410)
 
-            text7 = font.render(scoreDisplay7, True, green, blue)
+            text7 = font.render(scoreDisplay7, True, white, black)
             textRect7 = text7.get_rect()
-            textRect7.center = (500 // 2, 440)
+            textRect7.center = (360, 440)
 
-            text8 = font.render(scoreDisplay8, True, green, blue)
+            text8 = font.render(scoreDisplay8, True, white, black)
             textRect8 = text8.get_rect()
-            textRect8.center = (500 // 2, 500)
+            textRect8.center = (360, 500)
 
-            text9 = font.render(scoreDisplay9, True, green, blue)
+            text9 = font.render(scoreDisplay9, True, white, black)
             textRect9 = text9.get_rect()
-            textRect9.center = (500 // 2, 560)
+            textRect9.center = (360, 560)
 
+        # Does this if there is a score in scores4.
         if scores4.score > 0:
-            textspacer3 = font.render("------------------------------------------", True, green, blue)
+            textspacer3 = font.render("------------------------------------------", True, white, black)
             textRectSpacer3 = textspacer3.get_rect()
-            textRectSpacer3.center = (500 // 2, 590)
+            textRectSpacer3.center = (360, 590)
 
-            text10 = font.render(scoreDisplay10, True, green, blue)
+            text10 = font.render(scoreDisplay10, True, white, black)
             textRect10 = text10.get_rect()
-            textRect10.center = (500 // 2, 620)
+            textRect10.center = (360, 620)
 
-            text11 = font.render(scoreDisplay11, True, green, blue)
+            text11 = font.render(scoreDisplay11, True, white, black)
             textRect11 = text11.get_rect()
-            textRect11.center = (500 // 2, 680)
+            textRect11.center = (360, 680)
 
-            text12 = font.render(scoreDisplay12, True, green, blue)
+            text12 = font.render(scoreDisplay12, True, white, black)
             textRect12 = text12.get_rect()
-            textRect12.center = (500 // 2, 740)
+            textRect12.center = (360, 740)
 
+        # Does this if there is a score in scores5.
         if scores5.score > 0:
-            textspacer4 = font.render("------------------------------------------", True, green, blue)
+            textspacer4 = font.render("------------------------------------------", True, white, black)
             textRectSpacer4 = textspacer4.get_rect()
-            textRectSpacer4.center = (500 // 2, 770)
+            textRectSpacer4.center = (360, 770)
 
-            text13 = font.render(scoreDisplay13, True, green, blue)
+            text13 = font.render(scoreDisplay13, True, white, black)
             textRect13 = text13.get_rect()
-            textRect13.center = (500 // 2, 800)
+            textRect13.center = (360, 800)
 
-            text14 = font.render(scoreDisplay14, True, green, blue)
+            text14 = font.render(scoreDisplay14, True, white, black)
             textRect14 = text14.get_rect()
-            textRect14.center = (500 // 2, 860)
+            textRect14.center = (360, 860)
 
-            text15 = font.render(scoreDisplay15, True, green, blue)
+            text15 = font.render(scoreDisplay15, True, white, black)
             textRect15 = text15.get_rect()
-            textRect15.center = (500 // 2, 920)
+            textRect15.center = (360, 920)
 
-        isScores = isScores + 1
+        # increments isScore if the else statement was activated.
+        if isScores == 0:
+            isScores = isScores + 1
 
+    # Makes the display surface black
     display_surface.fill(black)
 
-    bg = pygame.image.load("imgs/pixelroad1.PNG").convert()
+    # Creates a background over the black surface
+    bg = pygame.image.load("imgs/option3.jpg").convert()
     bg = pygame.transform.scale(bg, resolution)
     screen.blit(bg, (0, 0))
 
-    if scoreboard[0].score <= 0:
-        scorebg = Button((128, 40, 40), 75, 475, 350, 50, '', "")
-        scorebg.draw(screen)
-    else:
-        scorebg = Button((128, 40, 40), 130, 60, 240, 870, '', "")
+    # All of these below accurately displays the information on top of the previous surface based on whether there is a score or not as well.
+    if isScores == 0:
+
+        # Creates a black section of on the image where the scores will be displayed.
+        scorebg = Button(black, 30, 480, 440, 40, '', "")
         scorebg.draw(screen)
 
-    if isScores == 0:
         display_surface.blit(text, textRect)
     else:
+
+        # Creates a black section of on the image where the scores will be displayed.
+        scorebg = Button(black, 210, 35, 290, 920, '', "")
+        scorebg.draw(screen)
+
         display_surface.blit(text1, textRect1)
         display_surface.blit(text2, textRect2)
         display_surface.blit(text3, textRect3)
@@ -319,11 +357,12 @@ def scoreboardRun(screen, Clock):
             display_surface.blit(text14, textRect14)
             display_surface.blit(text15, textRect15)
 
-    exitb = Button((60, 40, 40), 1, 1, 120, 120, 'BACK', "imgs/button.png")
-
+    # Creates the exit button in the top left
+    exitb = Button((60, 40, 40), 1, 1, 125, 125, 'BACK', "imgs/button.png")
     exitb.draw(screen)
     exitbClick = False
 
+    # This is essentially the 'main' file part of the file, as it creates the opportunity for the player to interact with the scoreboard menu.
     while scoreBoardActive:
         Clock.tick(30)
         pygame.display.flip()
@@ -335,6 +374,7 @@ def scoreboardRun(screen, Clock):
 
         pygame.display.update()
 
+        # Check if mouse is pressed and released
         if exitbClick and mouseButtonsScore()[0] is False:
             scoreBoardActive = False
 
