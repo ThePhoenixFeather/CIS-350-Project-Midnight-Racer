@@ -13,6 +13,8 @@ class Game:
         self.choice = 0
         self.colBoundaries = 20
         self.accelConstant = accelConstant
+
+        
     def gameOver(self):
         return gameOverState(self.screen, self.Clock)
 

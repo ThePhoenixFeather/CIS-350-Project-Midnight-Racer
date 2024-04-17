@@ -117,12 +117,20 @@ def settingsRun(screen, Clock, game):
     exitbClick = False
 
     # Creates the initial volume button
-    vol = Button(black, 350, 100, 100, 100, 'ON', "imgs/button.png")
-    volClick = False
+    if pygame.mixer.music.get_volume() == 0:
+        vol = Button(black, 350, 100, 100, 100, 'OFF', "imgs/xit.png")
+        volClick = True
+    else:
+        vol = Button(black, 350, 100, 100, 100, 'ON', "imgs/button.png")
+        volClick = False
 
     # Creates the initial difficulty button
-    dif = Button(black, 350, 300, 100, 100, 'EASY', "imgs/button.png")
-    difClick = False
+    if game.accelConstant == 0.0015:
+        dif = Button(black, 350, 300, 100, 100, 'EASY', "imgs/button.png")
+        difClick = False
+    else:
+        dif = Button(black, 350, 300, 100, 100, 'HARD', "imgs/xit.png")
+        difClick = True
 
     # Creates the right scroll button for the character selection
     right = Button(black, 350, 750, 100, 100, 'R', "imgs/button.png")
@@ -150,8 +158,12 @@ def settingsRun(screen, Clock, game):
                 settingsActive = False
                 pygame.quit()
 
+        # updates the pygame display
         pygame.display.update()
 
+
+        # if the button was pressed and released, do this.
+        # exit button interaction
         if exitbClick and mouseButtonsScore()[0] is False:
             settingsActive = False
 
@@ -163,6 +175,7 @@ def settingsRun(screen, Clock, game):
                 vol = Button(black, 350, 100, 100, 100, 'OFF', "imgs/xit.png")
                 pygame.mixer.music.set_volume(0)
                 volClick = False
+
             elif not volume:
                 volume = True
                 del vol
@@ -199,9 +212,7 @@ def settingsRun(screen, Clock, game):
 
             # add the left scroll feature here playercar = f"imgs/race_car_{n-1}" or something like that. go to 37 at 0
 
-        # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        # BUTTON INTERACTION HERE
-
+        # If key is pressed
         if exitB.isOver(mousePosScore()) and mouseButtonsScore()[0]:
             exitbClick = True
 
