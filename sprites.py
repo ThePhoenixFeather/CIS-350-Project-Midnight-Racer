@@ -67,8 +67,8 @@ class Player(pg.sprite.Sprite):
 
     def checkColision(self):
         for i in range(len(self.game.yPosSlowCars)):
-            if self.rect.y - playerPixelHeight + 20 <= self.game.yPosSlowCars[i] <= self.rect.y + playerPixelHeight - 20 and \
-                    (self.game.xPosSlowCars[i] - playerPixelWidth + 25 <= self.rect.x <= self.game.xPosSlowCars[i] + playerPixelWidth - 15):
+            if self.rect.y - playerPixelHeight + self.game.colBoundaries <= self.game.yPosSlowCars[i] <= self.rect.y + playerPixelHeight - self.game.colBoundaries and \
+                    (self.game.xPosSlowCars[i] - playerPixelWidth + self.game.colBoundaries <= self.rect.x <= self.game.xPosSlowCars[i] + playerPixelWidth - self.game.colBoundaries):
                 pass
                 self.game.gameIsOver = True
 
@@ -146,7 +146,7 @@ class SlowCar(pg.sprite.Sprite):
         else:
             self.nextTo = False
         self.rect.y = y
-        self.car = pg.image.load("imgs/race_car_" + str(rand.randint(0, 37)) + ".png").convert()
+        self.car = pg.image.load("imgs/race_car_" + str(rand.randint(0, 36)) + ".png").convert()
         self.car = pg.transform.scale(self.car, (playerPixelWidth, playerPixelHeight))
         self.image = self.car
         self.image = pg.Surface((playerPixelWidth, playerPixelHeight))

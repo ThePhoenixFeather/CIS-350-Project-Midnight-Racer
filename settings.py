@@ -51,12 +51,11 @@ def mouseButtonsScore():
     return pygame.mouse.get_pressed()
 
 class Settings:
-    def __init__(self):
+    def __init__(self, game):
         pygame.init()
         pygame.mixer.init()
 
-
-def settingsRun(screen, Clock):
+def settingsRun(screen, Clock, game):
 
     # Variable that dictates if the settings menu should be open
     settingsActive = True
@@ -137,7 +136,7 @@ def settingsRun(screen, Clock):
 
     # The main display loop for the settings area
     while settingsActive:
-        Clock.tick(30)
+        Clock.tick(fps)
         pygame.display.flip()
 
         # draws the buttons inside the loop so that they can be updated each time they are hit
@@ -162,11 +161,13 @@ def settingsRun(screen, Clock):
                 volume = False
                 del vol
                 vol = Button(black, 350, 100, 100, 100, 'OFF', "imgs/xit.png")
+                pygame.mixer.music.set_volume(0)
                 volClick = False
             elif not volume:
                 volume = True
                 del vol
                 vol = Button(black, 350, 100, 100, 100, 'ON', "imgs/button.png")
+                pygame.mixer.music.set_volume(audio)
                 volClick = False
 
         # Difficulty Button interaction
@@ -175,12 +176,16 @@ def settingsRun(screen, Clock):
                 difficulty = False
                 del dif
                 dif = Button(black, 350, 300, 100, 100, 'HARD', "imgs/xit.png")
+                game.colBoundaries = 3
+                game.accelConstant = 0.015
                 difClick = False
 
             elif not difficulty:
                 difficulty = True
                 del dif
                 dif = Button(black, 350, 300, 100, 100, 'EASY', "imgs/button.png")
+                game.colBoundaries = 20
+                game.accelConstant = accelConstant
                 difClick = False
 
         # Car Selection Right Click interaction

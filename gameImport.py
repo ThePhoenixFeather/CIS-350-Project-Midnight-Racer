@@ -63,7 +63,7 @@ def updatePhysics(startTime, accelConstant_Import):
     return timeReturn, currentSpeedReturn, distanceReturn
 
 
-def mainMenuState(screen, Clock):
+def mainMenuState(screen, Clock, game):
     mainMenuRun = True
 
     pygame.display.set_caption("Main Menu")
@@ -175,7 +175,7 @@ def mainMenuState(screen, Clock):
             del settingsB
             del quitB
 
-            setting.settingsRun(screen, Clock)  # finish later
+            setting.settingsRun(screen, Clock, game)  # finish later
 
             mainMenuRun = True
             settingsBClick = False

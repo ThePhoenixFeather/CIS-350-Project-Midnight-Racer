@@ -11,14 +11,14 @@ class Game:
         self.Clock = pg.time.Clock()
         self.running = True
         self.choice = 0
-
-
+        self.colBoundaries = 20
+        self.accelConstant = accelConstant
     def gameOver(self):
         return gameOverState(self.screen, self.Clock)
 
 
     def mainMenu(self):
-        mainMenuState(self.screen, self.Clock)
+        mainMenuState(self.screen, self.Clock, self)
 
 
     def newGame(self):  # A NEW GAME BEGINS
@@ -29,9 +29,6 @@ class Game:
         #self.bg = pg.transform.rotate(self.bg, 90)
         self.bg = pg.transform.scale(self.bg, resolution)
 
-        pg.mixer.music.load("audio\Juval - Play Your Game.mp3")
-        pg.mixer.music.set_volume(0.05)
-        pg.mixer.music.play(loops=-1)
 
         self.cScore = Button((255,255,255),0,920,300,80,"Score ")
 
@@ -103,9 +100,9 @@ class Game:
 
         self.allSprites.draw(self.screen)
         if self.acceleration <= 12.5:
-            self.acceleration += accelConstant
+            self.acceleration += self.accelConstant
         else:
-            self.acceleration += accelConstant / 10
+            self.acceleration += self.accelConstant / 10
 
         self.Clock.tick(fps)
 
@@ -139,6 +136,11 @@ class Game:
 
 
 game = Game()
+
+pg.mixer.music.load("audio\Juval - Play Your Game.mp3")
+pg.mixer.music.set_volume(audio)
+pg.mixer.music.play(loops=-1)
+
 game.main()
 
 pygame.quit()
