@@ -3,7 +3,7 @@ from config import *
 import random as rand
 
 class Player(pg.sprite.Sprite):
-    def __init__(self, game, x, y):
+    def __init__(self, game, x, y, s):
 
         self.game = game
         self._layer = playerLayer
@@ -17,21 +17,22 @@ class Player(pg.sprite.Sprite):
         self.xChange = 0
         self.yChange = 0
 
-        self.car = pg.image.load("imgs/race_car_12.png").convert()
-        self.car = pg.transform.scale(self.car, (playerPixelWidth,playerPixelHeight))
+        self.car = pg.image.load(f"imgs/race_car_{s}.png").convert()
+        self.car = pg.transform.scale(self.car, (playerPixelWidth, playerPixelHeight))
 
         self.image = self.car
         self.image = pg.Surface((playerPixelWidth, playerPixelHeight))
-        self.image.set_colorkey((255,255,255))
-        self.image.blit(self.car, (0,0))
+        self.image.set_colorkey((255, 255, 255))
+        self.image.blit(self.car, (0, 0))
 
         self.rect = self.car.get_rect()
         self.rect.x = self.x
         self.rect.y = self.y
 
+
     def update(self):
         self.move()
-        #self.colideCheck()
+        #self.collideCheck()
 
         self.rect.x += self.xChange
         self.rect.y += self.yChange
@@ -42,7 +43,7 @@ class Player(pg.sprite.Sprite):
 
     def move(self):
         keys = pg.key.get_pressed()
-        self.checkColision()
+        self.checkCollision()
         # LEFT AND RIGHT CONTROL
 
         if self.rect.x - self.width / 2 > 0:
@@ -56,16 +57,16 @@ class Player(pg.sprite.Sprite):
         # UP AND DOWN CONTROL
 
         if self.rect.y - self.height / 2 > 0:
-            if (keys[pg.K_w] or keys[pg.K_UP]):
+            if keys[pg.K_w] or keys[pg.K_UP]:
                 self.yChange -= playerControlSpeed
 
         if self.rect.y + self.height < resolution[1]:
-            if (keys[pg.K_s] or keys[pg.K_DOWN]):
+            if keys[pg.K_s] or keys[pg.K_DOWN]:
                 self.yChange += playerControlSpeed + self.game.acceleration/3
 
-        self.game.colision = False
+        self.game.collision = False
 
-    def checkColision(self):
+    def checkCollision(self):
         for i in range(len(self.game.yPosSlowCars)):
             if self.rect.y - playerPixelHeight + self.game.colBoundaries <= self.game.yPosSlowCars[i] <= self.rect.y + playerPixelHeight - self.game.colBoundaries and \
                     (self.game.xPosSlowCars[i] - playerPixelWidth + self.game.colBoundaries <= self.rect.x <= self.game.xPosSlowCars[i] + playerPixelWidth - self.game.colBoundaries):
@@ -88,12 +89,12 @@ class SlowCar(pg.sprite.Sprite):
         self.xChange = 0
         self.yChange = 0
 
-        self.car = pg.image.load("imgs/race_car_" + str(rand.randint(0,36)) + ".png").convert()
-        self.car = pg.transform.scale(self.car, (playerPixelWidth,playerPixelHeight))
+        self.car = pg.image.load("imgs/race_car_" + str(rand.randint(0, 36)) + ".png").convert()
+        self.car = pg.transform.scale(self.car, (playerPixelWidth, playerPixelHeight))
         self.image = self.car
         self.image = pg.Surface((playerPixelWidth, playerPixelHeight))
-        self.image.set_colorkey((255,255,255))
-        self.image.blit(self.car, (0,0))
+        self.image.set_colorkey((255, 255, 255))
+        self.image.blit(self.car, (0, 0))
 
         self.rect = self.car.get_rect()
         self.rect.x = self.x
@@ -122,26 +123,25 @@ class SlowCar(pg.sprite.Sprite):
     def respawn(self):
         t = 0
         x = 0
-        y = 0
         posCheck = False
-        while(True):
-            x+=1
+        while True:
+            x += 1
             y = rand.randint(-5200, -100)
             for i in self.game.carList:
                 if not (-1*playerPixelHeight*2.5 + i.rect.y <= y <= playerPixelHeight*2.5 + i.rect.y):
-                    t+=1
+                    t += 1
 
-                elif(i.rect.x != self.rect.x and posCheck == False and i.nextTo == False and self.nextTo == False):
-                    t+=1
+                elif i.rect.x != self.rect.x and posCheck is False and i.nextTo is False and self.nextTo is False:
+                    t += 1
                     posCheck = True
                     i.nextTo = True
-            if(t >= len(self.game.carList)):
+            if t >= len(self.game.carList):
                 break
-            if(x>=4000):    # Prevents crashing, may crash if a car can not find a place to spawn, is buggy but prevents crash
+            if x >= 4000:    # Prevents crashing, may crash if a car can not find a place to spawn, is buggy but prevents crash
                 y = rand.randint(-4700, -3300)
             else:
                 t = 0
-        if posCheck == True:
+        if posCheck:
             self.nextTo = True
         else:
             self.nextTo = False

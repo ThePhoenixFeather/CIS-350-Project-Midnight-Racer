@@ -1,5 +1,6 @@
 from sprites import *
 from gameImport import *
+from settings import *
 import math as mt
 
 
@@ -13,17 +14,19 @@ class Game:
         self.choice = 0
         self.colBoundaries = 20
         self.accelConstant = accelConstant
+        self.player = Player
 
-        
     def gameOver(self):
         return gameOverState(self.screen, self.Clock)
 
+    def setAccConstGame(self, num):
+        self.accelConstant = num
 
-    def mainMenu(self):
-        mainMenuState(self.screen, self.Clock, self)
+    def mainMenu(self, s):
+        mainMenuState(self.screen, self.Clock, self.player, s, self.accelConstant)
 
 
-    def newGame(self):  # A NEW GAME BEGINS
+    def newGame(self, s):  # A NEW GAME BEGINS
         self.playing = True
         # Load Background
         randbg = "imgs\pixelroad" + str(rand.randint(1, 2)) + ".png"
@@ -32,12 +35,12 @@ class Game:
         self.bg = pg.transform.scale(self.bg, resolution)
 
 
-        self.cScore = Button((255,255,255),0,920,300,80,"Score ")
+        self.cScore = Button((255, 255, 255), 0, 920, 300, 80, "Score ")
 
-        self.allSprites  = pg.sprite.LayeredUpdates() # OBJECT CONTAINING ALL SPRITES
+        self.allSprites = pg.sprite.LayeredUpdates() # OBJECT CONTAINING ALL SPRITES
         self.walls = pg.sprite.LayeredUpdates() # OBJECT CONTAINING ALL WALL SPRITES
         self.slowCars = pg.sprite.LayeredUpdates() # OBJECT CONTAINING ALL SLOW CAR SPRITES
-        self.player = Player(self, resolution[0]/2-playerPixelWidth/2, resolution[1]-playerPixelHeight-playerPixelHeight/2)
+        self.player = Player(self, resolution[0]/2-playerPixelWidth/2, resolution[1]-playerPixelHeight-playerPixelHeight/2, s)
 
         # RNG Cars
         self.car1 = SlowCar(self, lane1, 0)
@@ -114,26 +117,29 @@ class Game:
         pg.display.update()
 
 
-    def restart(self):
-        self.main()
+  #  def restart(self):
+  #      self.main()
 
 
     def main(self):
-        if self.choice == 0:
-            game.mainMenu()
-        game.newGame()
-        self.respawnAllCars()
-        while self.playing:
-            self.events()
-            self.update()
-            self.draw()
-            pygame.display.set_caption("Score: " + str(self.score))
-            if self.gameIsOver:
-                sc.updateScoreboard(self.score, self.score * self.acceleration * 8, self.acceleration)
-                self.choice = self.gameOver()
-                self.playing = False
-                self.restart()
-
+        s = Settings()
+        restart = True
+        while restart:
+            if self.choice == 0:
+                game.mainMenu(s)
+            self.accelConstant = accelEquals(self.accelConstant, s.accelConstantHolder)
+            game.newGame(s.get_car())
+            self.respawnAllCars()
+            while self.playing:
+                self.events()
+                self.update()
+                self.draw()
+                pygame.display.set_caption("Score: " + str(self.score))
+                if self.gameIsOver:
+                    sc.updateScoreboard(self.score, self.score * self.acceleration * 8, self.acceleration)
+                    self.choice = self.gameOver()
+                    self.playing = False
+        print("Acceleration Rate: " + str(game.accelConstant))
         self.running = False
 
 

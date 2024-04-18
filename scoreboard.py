@@ -108,7 +108,7 @@ def updateScoreboard(cur_score, cur_dist, cur_speed):
         s4 = holder3
         s5 = holder4
 
-    elif cur_score >= s2.score > 0:
+    elif cur_score >= s2.score >= 0:
         holder1 = setScore(s2)
         s2.set_board_info(cur_score, cur_dist, cur_speed)
         holder2 = setScore(s3)
@@ -117,19 +117,19 @@ def updateScoreboard(cur_score, cur_dist, cur_speed):
         s4 = holder2
         s5 = holder3
 
-    elif cur_score >= s3.score > 0:
+    elif cur_score >= s3.score >= 0:
         holder1 = setScore(s3)
         s3.set_board_info(cur_score, cur_dist, cur_speed)
         holder2 = setScore(s4)
         s4 = holder1
         s5 = holder2
 
-    elif cur_score >= s4.score > 0:
+    elif cur_score >= s4.score >= 0:
         holder1 = setScore(s4)
         s4.set_board_info(cur_score, cur_dist, cur_speed)
         s5 = holder1
 
-    elif cur_score >= s5.score > 0:
+    elif cur_score >= s5.score >= 0:
         s5.set_board_info(cur_score, cur_dist, cur_speed)
 
     # Sets the updated and sorted scores to the scoreboard array

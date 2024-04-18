@@ -50,20 +50,52 @@ def mousePosScore():
 def mouseButtonsScore():
     return pygame.mouse.get_pressed()
 
-class Settings:
-    def __init__(self, game):
-        pygame.init()
-        pygame.mixer.init()
 
-def settingsRun(screen, Clock, game):
+class Settings:
+    def __init__(self):
+        self.car_type = "12"
+        self.n = 12
+        self.accelConstantHolder = 0.0015
+
+    def get_car(self):
+        return self.car_type
+
+    def set_car(self, a):
+        self.car_type = a
+
+    def get_n(self):
+        return self.n
+
+    def set_n(self, num):
+        self.n = num
+
+    def add_n(self, num):
+        self.n = self.n + num
+
+    def subtract_n(self, num):
+        self.n = self.n - num
+
+    def get_accConst(self):
+        return self.accelConstantHolder
+
+    def set_accConst(self, num):
+        self.accelConstantHolder = num
+
+def accelEquals(x, y):
+    x = y
+    return x
+
+def settingsRun(screen, Clock, game, s):
 
     # Variable that dictates if the settings menu should be open
     settingsActive = True
 
+    pygame.display.set_caption("Settings")
+
     # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     volume = True # temporary variable for volume
     difficulty = True # temporary variable for difficulty
-    n = 0 # variable to track which car is currently selected
+    hold = rand.randint(1, 2)
 
     # Color tuples
     white = (255, 255, 255)
@@ -79,7 +111,7 @@ def settingsRun(screen, Clock, game):
     font = pygame.font.Font('freesansbold.ttf', 17)
 
     # Generates a random background, just like the game.
-    randbg = "imgs\pixelroad" + str(rand.randint(1, 2)) + ".png"
+    randbg = "imgs\pixelroad" + str(hold) + ".png"
     bg = pygame.image.load(randbg).convert()
     bg = pygame.transform.scale(bg, resolution)
     screen.blit(bg, (0, 0))
@@ -125,7 +157,7 @@ def settingsRun(screen, Clock, game):
         volClick = False
 
     # Creates the initial difficulty button
-    if game.accelConstant == 0.0015:
+    if s.get_accConst() == 0.0015:
         dif = Button(black, 350, 300, 100, 100, 'EASY', "imgs/button.png")
         difClick = False
     else:
@@ -142,14 +174,18 @@ def settingsRun(screen, Clock, game):
     leftClick = False
     left.draw(screen)
 
+    # BUGGED - Displays other previous displays. Does not delete.
+    car_display = Button((60, 40, 40), 150, 580, 200, 275, '', f"imgs/race_car_{s.get_n()}.png")
+
     # The main display loop for the settings area
     while settingsActive:
-        Clock.tick(fps)
+        Clock.tick(30)
         pygame.display.flip()
 
         # draws the buttons inside the loop so that they can be updated each time they are hit
         vol.draw(screen)
         dif.draw(screen)
+        car_display.draw(screen)
 
         # debate if you want to include the car-swapping mechanic.
 
@@ -166,6 +202,107 @@ def settingsRun(screen, Clock, game):
         # exit button interaction
         if exitbClick and mouseButtonsScore()[0] is False:
             settingsActive = False
+
+         # Car Selection Right Click interaction
+        if rightClick and mouseButtonsScore()[0] is False:
+            rightClick = False
+            if s.get_n() + 1 > 37:
+                s.set_car("0")
+                s.set_n(0)
+                del car_display
+
+                randbg = "imgs\pixelroad" + str(hold) + ".png"
+                bg = pygame.image.load(randbg).convert()
+                bg = pygame.transform.scale(bg, resolution)
+                screen.blit(bg, (0, 0))
+
+                text1bg.draw(screen)
+                text2bg.draw(screen)
+                text3bg.draw(screen)
+
+                display_surface.blit(text1, textRect1)
+                display_surface.blit(text2, textRect2)
+                display_surface.blit(text3, textRect3)
+
+                exitB.draw(screen)
+                right.draw(screen)
+                left.draw(screen)
+
+                car_display = Button((60, 40, 40), 150, 580, 200, 275, '', f"imgs/race_car_0.png")
+
+            else:
+                s.add_n(1)
+                s.set_car(f"{s.get_n()}")
+                del car_display
+
+                randbg = "imgs\pixelroad" + str(hold) + ".png"
+                bg = pygame.image.load(randbg).convert()
+                bg = pygame.transform.scale(bg, resolution)
+                screen.blit(bg, (0, 0))
+
+                text1bg.draw(screen)
+                text2bg.draw(screen)
+                text3bg.draw(screen)
+
+                display_surface.blit(text1, textRect1)
+                display_surface.blit(text2, textRect2)
+                display_surface.blit(text3, textRect3)
+
+                exitB.draw(screen)
+                right.draw(screen)
+                left.draw(screen)
+
+                car_display = Button((60, 40, 40), 150, 580, 200, 275, '', f"imgs/race_car_{s.get_n()}.png")
+
+        if leftClick and mouseButtonsScore()[0] is False:
+            leftClick = False
+            if s.get_n() - 1 < 0:
+                s.set_car("37")
+                s.set_n(37)
+                del car_display
+
+                randbg = "imgs\pixelroad" + str(hold) + ".png"
+                bg = pygame.image.load(randbg).convert()
+                bg = pygame.transform.scale(bg, resolution)
+                screen.blit(bg, (0, 0))
+
+                text1bg.draw(screen)
+                text2bg.draw(screen)
+                text3bg.draw(screen)
+
+                display_surface.blit(text1, textRect1)
+                display_surface.blit(text2, textRect2)
+                display_surface.blit(text3, textRect3)
+
+                exitB.draw(screen)
+                right.draw(screen)
+                left.draw(screen)
+
+                car_display = Button((60, 40, 40), 150, 580, 200, 275, '', f"imgs/race_car_37.png")
+
+            else:
+                s.subtract_n(1)
+                s.set_car(f"{s.get_n()}")
+                del car_display
+
+                randbg = "imgs\pixelroad" + str(hold) + ".png"
+                bg = pygame.image.load(randbg).convert()
+                bg = pygame.transform.scale(bg, resolution)
+                screen.blit(bg, (0, 0))
+
+                text1bg.draw(screen)
+                text2bg.draw(screen)
+                text3bg.draw(screen)
+
+                display_surface.blit(text1, textRect1)
+                display_surface.blit(text2, textRect2)
+                display_surface.blit(text3, textRect3)
+
+                exitB.draw(screen)
+                right.draw(screen)
+                left.draw(screen)
+
+                car_display = Button((60, 40, 40), 150, 580, 200, 275, '', f"imgs/race_car_{s.get_n()}.png")
 
         # Volume Button interaction
         if volClick and mouseButtonsScore()[0] is False:
@@ -190,7 +327,7 @@ def settingsRun(screen, Clock, game):
                 del dif
                 dif = Button(black, 350, 300, 100, 100, 'HARD', "imgs/xit.png")
                 game.colBoundaries = 3
-                game.accelConstant = 0.015
+                s.set_accConst(0.015)
                 difClick = False
 
             elif not difficulty:
@@ -198,19 +335,8 @@ def settingsRun(screen, Clock, game):
                 del dif
                 dif = Button(black, 350, 300, 100, 100, 'EASY', "imgs/button.png")
                 game.colBoundaries = 20
-                game.accelConstant = accelConstant
+                s.set_accConst(0.0015)
                 difClick = False
-
-        # Car Selection Right Click interaction
-        if rightClick and mouseButtonsScore()[0] is False:
-            rightClick = False
-
-            # add the right scroll feature here playercar = f"imgs/race_car_{n+1}" or something like that. go to 0 at 37
-
-        if leftClick and mouseButtonsScore()[0] is False:
-            leftClick = False
-
-            # add the left scroll feature here playercar = f"imgs/race_car_{n-1}" or something like that. go to 37 at 0
 
         # If key is pressed
         if exitB.isOver(mousePosScore()) and mouseButtonsScore()[0]:
@@ -233,8 +359,3 @@ def settingsRun(screen, Clock, game):
 
     del exitB
     pygame.display.flip()
-
-    # TO DO LIST
-    # create a button that mutes/unmutes the song playing
-    # create a button that swaps difficulty (increase/decrease acceleration)
-    # create a section that allows the player to swap player car to a different option

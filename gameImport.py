@@ -63,7 +63,7 @@ def updatePhysics(startTime, accelConstant_Import):
     return timeReturn, currentSpeedReturn, distanceReturn
 
 
-def mainMenuState(screen, Clock, game):
+def mainMenuState(screen, Clock, game, s, accelConst):
     mainMenuRun = True
 
     pygame.display.set_caption("Main Menu")
@@ -113,7 +113,6 @@ def mainMenuState(screen, Clock, game):
             pass
 
         if quitBClick and mouseButtons()[0] is False:
-            mainMenuRun = False
             pygame.quit()
             quit()
 
@@ -149,6 +148,8 @@ def mainMenuState(screen, Clock, game):
 
             mainMenuRun = True
             scoreBClick = False
+
+            pygame.display.set_caption("Main Menu")
             startB = Button((60, 40, 40), resolution[0] / 2 - 310 / 2, 290, 310, 100, "START",
                             "imgs/startB.png")  # Allows for buttons to display images
             scoreB = Button((60, 40, 40), resolution[0] / 2 - 310 / 2, 410, 310, 100, "Scoreboard", "imgs/button.png")
@@ -175,10 +176,12 @@ def mainMenuState(screen, Clock, game):
             del settingsB
             del quitB
 
-            setting.settingsRun(screen, Clock, game)  # finish later
+            setting.settingsRun(screen, Clock, game, s)  # finish later
 
             mainMenuRun = True
             settingsBClick = False
+
+            pygame.display.set_caption("Main Menu")
             startB = Button((60, 40, 40), resolution[0] / 2 - 310 / 2, 290, 310, 100, "START",
                             "imgs/startB.png")  # Allows for buttons to display images
             scoreB = Button((60, 40, 40), resolution[0] / 2 - 310 / 2, 410, 310, 100, "Scoreboard", "imgs/button.png")
