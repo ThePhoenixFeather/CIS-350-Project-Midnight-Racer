@@ -1,5 +1,5 @@
 import pygame as pg
-from config import *
+from config import playerLayer, playerPixelHeight, playerPixelWidth, playerControlSpeed, resolution, slowCarSpeed
 import random as rand
 
 
@@ -8,7 +8,7 @@ class Player(pg.sprite.Sprite):
 
         self.game = game
         self._layer = playerLayer
-        self.groups = self.game.allSprites
+        self.groups = self.game.all_sprites
         pg.sprite.Sprite.__init__(self, self.groups)
 
         self.x = x
@@ -67,18 +67,18 @@ class Player(pg.sprite.Sprite):
         self.game.collision = False
 
     def checkCollision(self):
-        for i in range(len(self.game.yPosSlowCars)):
-            if self.rect.y - playerPixelHeight + self.game.colBoundaries <= self.game.yPosSlowCars[i] <= self.rect.y + playerPixelHeight - self.game.colBoundaries and (
-                    self.game.xPosSlowCars[i] - playerPixelWidth + self.game.colBoundaries <= self.rect.x <= self.game.xPosSlowCars[i] + playerPixelWidth - self.game.colBoundaries):
+        for i in range(len(self.game.y_pos_slowcars)):
+            if self.rect.y - playerPixelHeight + self.game.col_boundaries <= self.game.y_pos_slowcars[i] <= self.rect.y + playerPixelHeight - self.game.col_boundaries and (
+                    self.game.x_pos_slowcars[i] - playerPixelWidth + self.game.col_boundaries <= self.rect.x <= self.game.x_pos_slowcars[i] + playerPixelWidth - self.game.col_boundaries):
                 pass
-                self.game.gameIsOver = True
+                self.game.game_is_over = True
 
 
 class SlowCar(pg.sprite.Sprite):
     def __init__(self, game, x, y):
         self.game = game
         self._layer = playerLayer
-        self.groups = self.game.allSprites
+        self.groups = self.game.all_sprites
         pg.sprite.Sprite.__init__(self, self.groups)
 
         self.x = x
@@ -125,7 +125,7 @@ class SlowCar(pg.sprite.Sprite):
         while True:
             x += 1
             y = rand.randint(-5200, -100)
-            for i in self.game.carList:
+            for i in self.game.car_list:
                 if not (-1 * playerPixelHeight * 2.5 + i.rect.y <=
                         y <= playerPixelHeight * 2.5 + i.rect.y):
                     t += 1
@@ -134,9 +134,9 @@ class SlowCar(pg.sprite.Sprite):
                     t += 1
                     posCheck = True
                     i.nextTo = True
-            if t >= len(self.game.carList):
+            if t >= len(self.game.car_list):
                 break
-            if x >= 4000:    # Prevents crashing, may crash if a car can not find a place to spawn, is buggy but prevents crash
+            if x >= 4000:
                 y = rand.randint(-4700, -3300)
             else:
                 t = 0

@@ -1,49 +1,81 @@
-from sprites import *
-from gameImport import *
-from settings import *
 import math as mt
+from sprites import Player, pg, rand, SlowCar
+from gameImport import mainMenuState, Button, gameOverState, sc
+from settings import Settings, accelEquals
+from config import accelConstant, resolution, playerPixelHeight, playerPixelWidth, lane1, lane2, lane3, audio, fps
+
 
 
 class Game:
+
+
     def __init__(self):
         pg.init()
         pg.mixer.init()
         self.screen = pg.display.set_mode(resolution)
-        self.Clock = pg.time.Clock()
+        self.clock = pg.time.Clock()
         self.running = True
         self.choice = 0
-        self.colBoundaries = 20
-        self.accelConstant = accelConstant
+        self.col_boundaries = 20
+        self.accel_constant = accelConstant
         self.player = Player
 
+        self.car1 = None
+        self.car2 = None
+        self.car3 = None
+        self.car4 = None
+        self.car5 = None
+        self.car6 = None
+        self.car7 = None
+        self.car8 = None
+        self.car9 = None
+
+        self.playing = False
+        self.b_g = None
+
+        self.c_score = None
+        self.all_sprites = None
+        self.walls = None
+
+        self.slow_cars = None
+        self.player = None
+        self.acceleration = None
+        self.car_list = None
+        self.score = None
+        self.y_pos_slowcars = None
+        self.x_pos_slowcars = None
+        self.bg_height = None
+        self.bg_needed = None
+        self.scroll = None
+        self.game_is_over = False
+
     def gameOver(self):
-        return gameOverState(self.screen, self.Clock)
+        return gameOverState(self.screen, self.clock)
 
     def setAccConstGame(self, num):
-        self.accelConstant = num
+        self.accel_constant = num
 
     def mainMenu(self, s):
         mainMenuState(
             self.screen,
-            self.Clock,
+            self.clock,
             self.player,
             s,
-            self.accelConstant)
+            self.accel_constant)
 
-    def newGame(self, s):  # A NEW GAME BEGINS
+    def newGame(self, s_in):  # A NEW GAME BEGINS
         self.playing = True
         # Load Background
         randbg = "imgs\\pixelroad" + str(rand.randint(1, 2)) + ".png"
-        self.bg = pg.image.load(randbg).convert()
         # self.bg = pg.transform.rotate(self.bg, 90)
-        self.bg = pg.transform.scale(self.bg, resolution)
+        self.b_g = pg.transform.scale(pg.image.load(randbg).convert(), resolution)
 
-        self.cScore = Button((255, 255, 255), 0, 920, 300, 80, "Score ")
+        self.c_score = Button((255, 255, 255), 0, 920, 300, 80, "Score ")
 
-        self.allSprites = pg.sprite.LayeredUpdates()  # OBJECT CONTAINING ALL SPRITES
+        self.all_sprites = pg.sprite.LayeredUpdates()  # OBJECT CONTAINING ALL SPRITES
         self.walls = pg.sprite.LayeredUpdates()  # OBJECT CONTAINING ALL WALL SPRITES
         # OBJECT CONTAINING ALL SLOW CAR SPRITES
-        self.slowCars = pg.sprite.LayeredUpdates()
+        self.slow_cars = pg.sprite.LayeredUpdates()
         self.player = Player(
             self,
             resolution[0] /
@@ -54,7 +86,7 @@ class Game:
             playerPixelHeight -
             playerPixelHeight /
             2,
-            s)
+            s_in)
 
         # RNG Cars
         self.car1 = SlowCar(self, lane1, 0)
@@ -69,7 +101,7 @@ class Game:
 
         self.acceleration = 0
 
-        self.carList = [
+        self.car_list = [
             self.car1,
             self.car2,
             self.car3,
@@ -79,9 +111,9 @@ class Game:
             self.car7,
             self.car8,
             self.car9]
-        self.score = -1 * len(self.carList)
+        self.score = -1 * len(self.car_list)
 
-        self.yPosSlowCars = [
+        self.y_pos_slowcars = [
             self.car1.rect.y,
             self.car2.rect.y,
             self.car3.rect.y,
@@ -91,7 +123,7 @@ class Game:
             self.car7.rect.y,
             self.car8.rect.y,
             self.car9.rect.y]
-        self.xPosSlowCars = [
+        self.x_pos_slowcars = [
             self.car1.rect.x,
             self.car2.rect.x,
             self.car3.rect.x,
@@ -102,27 +134,26 @@ class Game:
             self.car8.rect.x,
             self.car9.rect.x]
 
-        self.bgHeight = self.bg.get_height()
-        self.bgNeeded = mt.ceil(resolution[1] / self.bgHeight) + 1
+        self.bg_height = self.b_g.get_height()
+        self.bg_needed = mt.ceil(resolution[1] / self.bg_height) + 1
         self.scroll = 0
-        self.gameScore = 0
-        self.gameIsOver = False
+        self.game_is_over = False
         # self.respawnAllCars()
 
     def respawnAllCars(self):
-        for i in self.carList:
+        for i in self.car_list:
             i.respawn()
             self.update()
 
     def events(self):
         for events in pg.event.get():
-            if events.type == pygame.QUIT:
+            if events.type == pg.QUIT:
                 self.playing = False
                 self.running = False
 
     def update(self):
-        self.allSprites.update()
-        self.yPosSlowCars = [
+        self.all_sprites.update()
+        self.y_pos_slowcars = [
             self.car1.rect.y,
             self.car2.rect.y,
             self.car3.rect.y,
@@ -132,7 +163,7 @@ class Game:
             self.car7.rect.y,
             self.car8.rect.y,
             self.car9.rect.y]
-        self.xPosSlowCars = [
+        self.x_pos_slowcars = [
             self.car1.rect.x,
             self.car2.rect.x,
             self.car3.rect.x,
@@ -146,28 +177,28 @@ class Game:
     def draw(self):
 
         # draw scrolling background
-        for i in range(0, self.bgNeeded):
+        for i in range(0, self.bg_needed):
             self.screen.blit(
-                self.bg, (0, i * -1 * self.bgHeight + self.scroll))
+                self.b_g, (0, i * -1 * self.bg_height + self.scroll))
 
         # scroll background
         self.scroll += 5 + self.acceleration
 
         # reset scroll
 
-        if abs(self.scroll) > self.bgHeight:
+        if abs(self.scroll) > self.bg_height:
             self.scroll = 0
 
-        self.allSprites.draw(self.screen)
+        self.all_sprites.draw(self.screen)
         if self.acceleration <= 12.5:
-            self.acceleration += self.accelConstant
+            self.acceleration += self.accel_constant
         else:
-            self.acceleration += self.accelConstant / 10
+            self.acceleration += self.accel_constant / 10
 
-        self.Clock.tick(fps)
+        self.clock.tick(fps)
 
-        self.cScore.text = "Score " + str(self.score)
-        self.cScore.draw(self.screen)
+        self.c_score.text = "Score " + str(self.score)
+        self.c_score.draw(self.screen)
 
         pg.display.update()
 
@@ -175,28 +206,28 @@ class Game:
   #      self.main()
 
     def main(self):
-        s = Settings()
+        s_in = Settings()
         restart = True
         while restart:
             if self.choice == 0:
-                game.mainMenu(s)
-            self.accelConstant = accelEquals(
-                self.accelConstant, s.accelConstantHolder)
-            game.newGame(s.get_car())
+                game.mainMenu(s_in)
+            self.accel_constant = accelEquals(
+                self.accel_constant, s_in.accelConstantHolder)
+            game.newGame(s_in.get_car())
             self.respawnAllCars()
             while self.playing:
                 self.events()
                 self.update()
                 self.draw()
-                pygame.display.set_caption("Score: " + str(self.score))
-                if self.gameIsOver:
+                pg.display.set_caption("Score: " + str(self.score))
+                if self.game_is_over:
                     sc.updateScoreboard(
                         self.score,
                         self.score * self.acceleration * 8,
                         self.acceleration)
                     self.choice = self.gameOver()
                     self.playing = False
-        print("Acceleration Rate: " + str(game.accelConstant))
+        print("Acceleration Rate: " + str(game.accel_constant))
         self.running = False
 
 
@@ -208,4 +239,4 @@ pg.mixer.music.play(loops=-1)
 
 game.main()
 
-pygame.quit()
+pg.quit()
