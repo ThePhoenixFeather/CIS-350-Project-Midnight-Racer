@@ -5,7 +5,15 @@ import random as rand
 
 class Player(pg.sprite.Sprite):
     def __init__(self, game, x, y, s):
+        """
+        Initialize the Player object.
 
+        Parameters:
+            game (Game): The Game object instance.
+            x (int): The initial x-coordinate of the player's car.
+            y (int): The initial y-coordinate of the player's car.
+            s (str): Holds the number string to determine the sprite of the player car.
+        """
         self.game = game
         self._layer = playerLayer
         self.groups = self.game.all_sprites
@@ -32,6 +40,9 @@ class Player(pg.sprite.Sprite):
         self.rect.y = self.y
 
     def update(self):
+        """
+        Update the player's position based on user input.
+        """
         self.move()
         # self.collideCheck()
 
@@ -42,6 +53,9 @@ class Player(pg.sprite.Sprite):
         self.xChange = 0
 
     def move(self):
+        """
+        Move the player's car based on keyboard input.
+        """
         keys = pg.key.get_pressed()
         self.checkCollision()
         # LEFT AND RIGHT CONTROL
@@ -67,6 +81,9 @@ class Player(pg.sprite.Sprite):
         self.game.collision = False
 
     def checkCollision(self):
+        """
+        Check for collisions between the player's car and slow-moving cars.
+        """
         for i in range(len(self.game.y_pos_slowcars)):
             if self.rect.y - playerPixelHeight + self.game.col_boundaries <= self.game.y_pos_slowcars[i] <= self.rect.y + playerPixelHeight - self.game.col_boundaries and (
                     self.game.x_pos_slowcars[i] - playerPixelWidth + self.game.col_boundaries <= self.rect.x <= self.game.x_pos_slowcars[i] + playerPixelWidth - self.game.col_boundaries):
@@ -75,7 +92,16 @@ class Player(pg.sprite.Sprite):
 
 
 class SlowCar(pg.sprite.Sprite):
+
     def __init__(self, game, x, y):
+        """
+        Initialize the SlowCar object.
+
+        Parameters:
+            game (Game): The Game object instance.
+            x (int): The initial x-coordinate of the slow-moving car.
+            y (int): The initial y-coordinate of the slow-moving car.
+        """
         self.game = game
         self._layer = playerLayer
         self.groups = self.game.all_sprites
@@ -104,6 +130,9 @@ class SlowCar(pg.sprite.Sprite):
         self.nextTo = False
 
     def update(self):
+        """
+        Update the slow-moving car's position.
+        """
         # Moves car back up to top
         if self.rect.y >= resolution[1] + playerPixelHeight / 2:
             self.respawn()
@@ -116,9 +145,15 @@ class SlowCar(pg.sprite.Sprite):
         self.xChange = 0
 
     def move(self):
+        """
+        Move the slow-moving car downwards.
+        """
         self.yChange += slowCarSpeed + self.game.acceleration
 
     def respawn(self):
+        """
+        Respawn the slow-moving car at a random position.
+        """
         t = 0
         x = 0
         posCheck = False

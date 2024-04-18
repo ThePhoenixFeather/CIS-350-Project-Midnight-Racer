@@ -66,6 +66,7 @@ class Settings:
         self.car_type = "12"
         self.n = 12
         self.accelConstantHolder = 0.0015
+        self.boundaryHolder = 20
 
     def get_car(self):
         return self.car_type
@@ -104,7 +105,6 @@ def settingsRun(screen, Clock, game, s):
 
     pygame.display.set_caption("Settings")
 
-    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     volume = True  # temporary variable for volume
     difficulty = True  # temporary variable for difficulty
     hold = rand.randint(1, 2)
@@ -350,7 +350,7 @@ def settingsRun(screen, Clock, game, s):
                 difficulty = False
                 del dif
                 dif = Button(black, 350, 300, 100, 100, 'HARD', "imgs/xit.png")
-                game.colBoundaries = 3
+                s.boundaryHolder = 3
                 s.set_accConst(0.015)
                 difClick = False
 
@@ -359,7 +359,7 @@ def settingsRun(screen, Clock, game, s):
                 del dif
                 dif = Button(black, 350, 300, 100, 100,
                              'EASY', "imgs/button.png")
-                game.colBoundaries = 20
+                s.boundaryHolder = 20
                 s.set_accConst(0.0015)
                 difClick = False
 
@@ -378,8 +378,6 @@ def settingsRun(screen, Clock, game, s):
 
         if left.isOver(mousePosScore()) and mouseButtonsScore()[0]:
             leftClick = True
-        # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        # BUTTON INTERACTION HERE
 
     del exitB
     pygame.display.flip()

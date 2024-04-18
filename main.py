@@ -213,6 +213,8 @@ class Game:
                 game.mainMenu(s_in)
             self.accel_constant = accelEquals(
                 self.accel_constant, s_in.accelConstantHolder)
+            self.col_boundaries = accelEquals( # Works in this case as well
+                self.col_boundaries, s_in.boundaryHolder)
             game.newGame(s_in.get_car())
             self.respawnAllCars()
             while self.playing:
@@ -227,7 +229,6 @@ class Game:
                         self.acceleration)
                     self.choice = self.gameOver()
                     self.playing = False
-        print("Acceleration Rate: " + str(game.accel_constant))
         self.running = False
 
 
