@@ -2,6 +2,7 @@ import pygame
 import random as rand
 from config import *
 
+
 class Button:
     def __init__(self, color, x, y, width, height, text='', imageLocation=''):
         self.color = color
@@ -12,14 +13,21 @@ class Button:
         self.text = text
         self.imageLocation = imageLocation
 
-
     def draw(self, win, outline=None):
         # Call this method to draw the button on the screen
         if outline:
-            pygame.draw.rect(win, outline, (self.x - 2, self.y - 2, self.width + 4, self.height + 4), 0)
+            pygame.draw.rect(
+                win,
+                outline,
+                (self.x - 2,
+                 self.y - 2,
+                 self.width + 4,
+                 self.height + 4),
+                0)
 
         if self.imageLocation == '':
-            pygame.draw.rect(win, self.color, (self.x, self.y, self.width, self.height), 0)
+            pygame.draw.rect(
+                win, self.color, (self.x, self.y, self.width, self.height), 0)
 
         if self.imageLocation != '':
             image = pygame.image.load(self.imageLocation).convert()
@@ -44,8 +52,10 @@ class Button:
 
         return False
 
+
 def mousePosScore():
     return pygame.mouse.get_pos()
+
 
 def mouseButtonsScore():
     return pygame.mouse.get_pressed()
@@ -81,9 +91,11 @@ class Settings:
     def set_accConst(self, num):
         self.accelConstantHolder = num
 
+
 def accelEquals(x, y):
     x = y
     return x
+
 
 def settingsRun(screen, Clock, game, s):
 
@@ -93,8 +105,8 @@ def settingsRun(screen, Clock, game, s):
     pygame.display.set_caption("Settings")
 
     # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    volume = True # temporary variable for volume
-    difficulty = True # temporary variable for difficulty
+    volume = True  # temporary variable for volume
+    difficulty = True  # temporary variable for difficulty
     hold = rand.randint(1, 2)
 
     # Color tuples
@@ -111,7 +123,7 @@ def settingsRun(screen, Clock, game, s):
     font = pygame.font.Font('freesansbold.ttf', 17)
 
     # Generates a random background, just like the game.
-    randbg = "imgs\pixelroad" + str(hold) + ".png"
+    randbg = "imgs\\pixelroad" + str(hold) + ".png"
     bg = pygame.image.load(randbg).convert()
     bg = pygame.transform.scale(bg, resolution)
     screen.blit(bg, (0, 0))
@@ -175,14 +187,16 @@ def settingsRun(screen, Clock, game, s):
     left.draw(screen)
 
     # BUGGED - Displays other previous displays. Does not delete.
-    car_display = Button((60, 40, 40), 150, 580, 200, 275, '', f"imgs/race_car_{s.get_n()}.png")
+    car_display = Button((60, 40, 40), 150, 580, 200, 275,
+                         '', f"imgs/race_car_{s.get_n()}.png")
 
     # The main display loop for the settings area
     while settingsActive:
         Clock.tick(30)
         pygame.display.flip()
 
-        # draws the buttons inside the loop so that they can be updated each time they are hit
+        # draws the buttons inside the loop so that they can be updated each
+        # time they are hit
         vol.draw(screen)
         dif.draw(screen)
         car_display.draw(screen)
@@ -197,7 +211,6 @@ def settingsRun(screen, Clock, game, s):
         # updates the pygame display
         pygame.display.update()
 
-
         # if the button was pressed and released, do this.
         # exit button interaction
         if exitbClick and mouseButtonsScore()[0] is False:
@@ -211,7 +224,7 @@ def settingsRun(screen, Clock, game, s):
                 s.set_n(0)
                 del car_display
 
-                randbg = "imgs\pixelroad" + str(hold) + ".png"
+                randbg = "imgs\\pixelroad" + str(hold) + ".png"
                 bg = pygame.image.load(randbg).convert()
                 bg = pygame.transform.scale(bg, resolution)
                 screen.blit(bg, (0, 0))
@@ -228,14 +241,15 @@ def settingsRun(screen, Clock, game, s):
                 right.draw(screen)
                 left.draw(screen)
 
-                car_display = Button((60, 40, 40), 150, 580, 200, 275, '', f"imgs/race_car_0.png")
+                car_display = Button(
+                    (60, 40, 40), 150, 580, 200, 275, '', f"imgs/race_car_0.png")
 
             else:
                 s.add_n(1)
                 s.set_car(f"{s.get_n()}")
                 del car_display
 
-                randbg = "imgs\pixelroad" + str(hold) + ".png"
+                randbg = "imgs\\pixelroad" + str(hold) + ".png"
                 bg = pygame.image.load(randbg).convert()
                 bg = pygame.transform.scale(bg, resolution)
                 screen.blit(bg, (0, 0))
@@ -252,7 +266,8 @@ def settingsRun(screen, Clock, game, s):
                 right.draw(screen)
                 left.draw(screen)
 
-                car_display = Button((60, 40, 40), 150, 580, 200, 275, '', f"imgs/race_car_{s.get_n()}.png")
+                car_display = Button(
+                    (60, 40, 40), 150, 580, 200, 275, '', f"imgs/race_car_{s.get_n()}.png")
 
         if leftClick and mouseButtonsScore()[0] is False:
             leftClick = False
@@ -261,7 +276,7 @@ def settingsRun(screen, Clock, game, s):
                 s.set_n(37)
                 del car_display
 
-                randbg = "imgs\pixelroad" + str(hold) + ".png"
+                randbg = "imgs\\pixelroad" + str(hold) + ".png"
                 bg = pygame.image.load(randbg).convert()
                 bg = pygame.transform.scale(bg, resolution)
                 screen.blit(bg, (0, 0))
@@ -278,14 +293,15 @@ def settingsRun(screen, Clock, game, s):
                 right.draw(screen)
                 left.draw(screen)
 
-                car_display = Button((60, 40, 40), 150, 580, 200, 275, '', f"imgs/race_car_37.png")
+                car_display = Button(
+                    (60, 40, 40), 150, 580, 200, 275, '', f"imgs/race_car_37.png")
 
             else:
                 s.subtract_n(1)
                 s.set_car(f"{s.get_n()}")
                 del car_display
 
-                randbg = "imgs\pixelroad" + str(hold) + ".png"
+                randbg = "imgs\\pixelroad" + str(hold) + ".png"
                 bg = pygame.image.load(randbg).convert()
                 bg = pygame.transform.scale(bg, resolution)
                 screen.blit(bg, (0, 0))
@@ -302,7 +318,8 @@ def settingsRun(screen, Clock, game, s):
                 right.draw(screen)
                 left.draw(screen)
 
-                car_display = Button((60, 40, 40), 150, 580, 200, 275, '', f"imgs/race_car_{s.get_n()}.png")
+                car_display = Button(
+                    (60, 40, 40), 150, 580, 200, 275, '', f"imgs/race_car_{s.get_n()}.png")
 
         # Volume Button interaction
         if volClick and mouseButtonsScore()[0] is False:
@@ -316,7 +333,14 @@ def settingsRun(screen, Clock, game, s):
             elif not volume:
                 volume = True
                 del vol
-                vol = Button(black, 350, 100, 100, 100, 'ON', "imgs/button.png")
+                vol = Button(
+                    black,
+                    350,
+                    100,
+                    100,
+                    100,
+                    'ON',
+                    "imgs/button.png")
                 pygame.mixer.music.set_volume(audio)
                 volClick = False
 
@@ -333,7 +357,8 @@ def settingsRun(screen, Clock, game, s):
             elif not difficulty:
                 difficulty = True
                 del dif
-                dif = Button(black, 350, 300, 100, 100, 'EASY', "imgs/button.png")
+                dif = Button(black, 350, 300, 100, 100,
+                             'EASY', "imgs/button.png")
                 game.colBoundaries = 20
                 s.set_accConst(0.0015)
                 difClick = False
@@ -355,7 +380,6 @@ def settingsRun(screen, Clock, game, s):
             leftClick = True
         # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         # BUTTON INTERACTION HERE
-
 
     del exitB
     pygame.display.flip()

@@ -2,6 +2,7 @@ import pygame as pg
 from config import *
 import random as rand
 
+
 class Player(pg.sprite.Sprite):
     def __init__(self, game, x, y, s):
 
@@ -18,7 +19,8 @@ class Player(pg.sprite.Sprite):
         self.yChange = 0
 
         self.car = pg.image.load(f"imgs/race_car_{s}.png").convert()
-        self.car = pg.transform.scale(self.car, (playerPixelWidth, playerPixelHeight))
+        self.car = pg.transform.scale(
+            self.car, (playerPixelWidth, playerPixelHeight))
 
         self.image = self.car
         self.image = pg.Surface((playerPixelWidth, playerPixelHeight))
@@ -29,17 +31,15 @@ class Player(pg.sprite.Sprite):
         self.rect.x = self.x
         self.rect.y = self.y
 
-
     def update(self):
         self.move()
-        #self.collideCheck()
+        # self.collideCheck()
 
         self.rect.x += self.xChange
         self.rect.y += self.yChange
 
         self.yChange = 0
         self.xChange = 0
-
 
     def move(self):
         keys = pg.key.get_pressed()
@@ -48,11 +48,11 @@ class Player(pg.sprite.Sprite):
 
         if self.rect.x - self.width / 2 > 0:
             if keys[pg.K_a] or keys[pg.K_LEFT]:
-                self.xChange -= playerControlSpeed + self.game.acceleration/3
+                self.xChange -= playerControlSpeed + self.game.acceleration / 3
 
         if self.rect.x + self.width * 1.5 < resolution[0]:
             if keys[pg.K_d] or keys[pg.K_RIGHT]:
-                self.xChange += playerControlSpeed + self.game.acceleration/3
+                self.xChange += playerControlSpeed + self.game.acceleration / 3
 
         # UP AND DOWN CONTROL
 
@@ -62,14 +62,14 @@ class Player(pg.sprite.Sprite):
 
         if self.rect.y + self.height < resolution[1]:
             if keys[pg.K_s] or keys[pg.K_DOWN]:
-                self.yChange += playerControlSpeed + self.game.acceleration/3
+                self.yChange += playerControlSpeed + self.game.acceleration / 3
 
         self.game.collision = False
 
     def checkCollision(self):
         for i in range(len(self.game.yPosSlowCars)):
-            if self.rect.y - playerPixelHeight + self.game.colBoundaries <= self.game.yPosSlowCars[i] <= self.rect.y + playerPixelHeight - self.game.colBoundaries and \
-                    (self.game.xPosSlowCars[i] - playerPixelWidth + self.game.colBoundaries <= self.rect.x <= self.game.xPosSlowCars[i] + playerPixelWidth - self.game.colBoundaries):
+            if self.rect.y - playerPixelHeight + self.game.colBoundaries <= self.game.yPosSlowCars[i] <= self.rect.y + playerPixelHeight - self.game.colBoundaries and (
+                    self.game.xPosSlowCars[i] - playerPixelWidth + self.game.colBoundaries <= self.rect.x <= self.game.xPosSlowCars[i] + playerPixelWidth - self.game.colBoundaries):
                 pass
                 self.game.gameIsOver = True
 
@@ -89,8 +89,10 @@ class SlowCar(pg.sprite.Sprite):
         self.xChange = 0
         self.yChange = 0
 
-        self.car = pg.image.load("imgs/race_car_" + str(rand.randint(0, 36)) + ".png").convert()
-        self.car = pg.transform.scale(self.car, (playerPixelWidth, playerPixelHeight))
+        self.car = pg.image.load(
+            "imgs/race_car_" + str(rand.randint(0, 36)) + ".png").convert()
+        self.car = pg.transform.scale(
+            self.car, (playerPixelWidth, playerPixelHeight))
         self.image = self.car
         self.image = pg.Surface((playerPixelWidth, playerPixelHeight))
         self.image.set_colorkey((255, 255, 255))
@@ -103,7 +105,7 @@ class SlowCar(pg.sprite.Sprite):
 
     def update(self):
         # Moves car back up to top
-        if self.rect.y >= resolution[1] + playerPixelHeight/2:
+        if self.rect.y >= resolution[1] + playerPixelHeight / 2:
             self.respawn()
         self.move()
 
@@ -113,12 +115,8 @@ class SlowCar(pg.sprite.Sprite):
         self.yChange = 0
         self.xChange = 0
 
-
-
     def move(self):
         self.yChange += slowCarSpeed + self.game.acceleration
-
-
 
     def respawn(self):
         t = 0
@@ -128,7 +126,8 @@ class SlowCar(pg.sprite.Sprite):
             x += 1
             y = rand.randint(-5200, -100)
             for i in self.game.carList:
-                if not (-1*playerPixelHeight*2.5 + i.rect.y <= y <= playerPixelHeight*2.5 + i.rect.y):
+                if not (-1 * playerPixelHeight * 2.5 + i.rect.y <=
+                        y <= playerPixelHeight * 2.5 + i.rect.y):
                     t += 1
 
                 elif i.rect.x != self.rect.x and posCheck is False and i.nextTo is False and self.nextTo is False:
@@ -146,8 +145,10 @@ class SlowCar(pg.sprite.Sprite):
         else:
             self.nextTo = False
         self.rect.y = y
-        self.car = pg.image.load("imgs/race_car_" + str(rand.randint(0, 36)) + ".png").convert()
-        self.car = pg.transform.scale(self.car, (playerPixelWidth, playerPixelHeight))
+        self.car = pg.image.load(
+            "imgs/race_car_" + str(rand.randint(0, 36)) + ".png").convert()
+        self.car = pg.transform.scale(
+            self.car, (playerPixelWidth, playerPixelHeight))
         self.image = self.car
         self.image = pg.Surface((playerPixelWidth, playerPixelHeight))
         self.image.set_colorkey((255, 255, 255))
